@@ -49,13 +49,8 @@ function runSpatialVerification(poGeoJSON, psGeoJSON) {
     const areaDiscrepancyRatio = Math.abs(poArea - psArea) / poArea;
     const areaRatio = psArea / poArea;
 
-    // STEP 5: Calculate IoU (Intersection over Union / Jaccard Index)
-    // Turf 7 syntax for intersect requires two separate features
-    const intersection = turf.intersect(turf.featureCollection([f1, f2])); 
-    
-    // Fallback: If Turf 7 intersect errors, use direct parameters: turf.intersect(f1, f2)
-    // Actually, v7 syntax is: turf.intersect(f1, f2) or turf.intersect(featureCollection) depending on exact minor version. 
-    // Safest bet for Turf 7:
+    // STEP 5: Calculate IoU (Intersection over Union / Jaccard Index).
+    // Turf v7 changed this signature between releases, so support both forms.
     let intersectionFeature;
     try {
         intersectionFeature = turf.intersect(f1, f2);

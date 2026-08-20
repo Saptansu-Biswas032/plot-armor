@@ -1,0 +1,1104 @@
+{
+  "datasets": [
+    {
+      "ulpin": "ULPIN_2026_1001",
+      "verification_state_expected": "VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A1",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2022-01-15T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_1"
+            }
+          },
+          {
+            "id": "ROR_B1",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2022-02-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_1"
+            }
+          },
+          {
+            "id": "CAD_C1",
+            "type": "Cadastral_Polygon",
+            "source_authority": "Survey",
+            "timestamp": "2022-03-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "spatial_extent": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      80,
+                      17
+                    ],
+                    [
+                      80.001,
+                      17
+                    ],
+                    [
+                      80.001,
+                      17.001
+                    ],
+                    [
+                      80,
+                      17.001
+                    ],
+                    [
+                      80,
+                      17
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A1",
+            "target": "ROR_B1",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "ROR_B1",
+            "target": "CAD_C1",
+            "relation": "CLAIMS_GEOMETRY"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1002",
+      "verification_state_expected": "PROVISIONALLY VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "INHERIT_A2",
+            "type": "Inheritance",
+            "source_authority": "Panchayat",
+            "timestamp": "1995-05-20T00:00:00Z",
+            "version": 1,
+            "confidence": 0.6,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_2"
+            }
+          },
+          {
+            "id": "ROR_B2",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "1995-06-10T00:00:00Z",
+            "version": 2,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "INHERIT_A2",
+            "target": "ROR_B2",
+            "relation": "TRIGGERS_MUTATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1003",
+      "verification_state_expected": "INCONSISTENT",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A3",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-01-10T00:00:00Z",
+            "version": 1,
+            "confidence": 0.99,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_3"
+            }
+          },
+          {
+            "id": "ROR_B3",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2023-02-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.85,
+            "attributes": {
+              "textual_area_sqm": 40468.6,
+              "owner_id": "UID_3"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A3",
+            "target": "ROR_B3",
+            "relation": "CONTRADICTS_AREA"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1004",
+      "verification_state_expected": "DISPUTE SUSPECTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "ROR_A4",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2010-01-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_OLD_4"
+            }
+          },
+          {
+            "id": "DEED_B4",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_THIEF_4"
+            }
+          },
+          {
+            "id": "DEED_C4",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_BUYER_4"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_B4",
+            "target": "ROR_A4",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_C4",
+            "target": "ROR_A4",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_B4",
+            "target": "DEED_C4",
+            "relation": "DUPLICATE_REGISTRATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1005",
+      "verification_state_expected": "FORMALLY DISPUTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A5",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2020-05-12T00:00:00Z",
+            "version": 1,
+            "confidence": 0.98,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_5"
+            }
+          },
+          {
+            "id": "ROR_B5",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2020-06-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_5"
+            }
+          },
+          {
+            "id": "COURT_C5",
+            "type": "Court_Case",
+            "source_authority": "Civil_Court",
+            "timestamp": "2021-04-10T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "status": "ACTIVE_INJUNCTION"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A5",
+            "target": "ROR_B5",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "COURT_C5",
+            "target": "ROR_B5",
+            "relation": "INJUNCTION_AGAINST_TITLE"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1006",
+      "verification_state_expected": "VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A6",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2022-01-15T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_6"
+            }
+          },
+          {
+            "id": "ROR_B6",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2022-02-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_6"
+            }
+          },
+          {
+            "id": "CAD_C6",
+            "type": "Cadastral_Polygon",
+            "source_authority": "Survey",
+            "timestamp": "2022-03-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "spatial_extent": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      80,
+                      22
+                    ],
+                    [
+                      80.001,
+                      22
+                    ],
+                    [
+                      80.001,
+                      22.001
+                    ],
+                    [
+                      80,
+                      22.001
+                    ],
+                    [
+                      80,
+                      22
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A6",
+            "target": "ROR_B6",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "ROR_B6",
+            "target": "CAD_C6",
+            "relation": "CLAIMS_GEOMETRY"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1007",
+      "verification_state_expected": "PROVISIONALLY VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "INHERIT_A7",
+            "type": "Inheritance",
+            "source_authority": "Panchayat",
+            "timestamp": "1995-05-20T00:00:00Z",
+            "version": 1,
+            "confidence": 0.6,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_7"
+            }
+          },
+          {
+            "id": "ROR_B7",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "1995-06-10T00:00:00Z",
+            "version": 2,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_7"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "INHERIT_A7",
+            "target": "ROR_B7",
+            "relation": "TRIGGERS_MUTATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1008",
+      "verification_state_expected": "INCONSISTENT",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A8",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-01-10T00:00:00Z",
+            "version": 1,
+            "confidence": 0.99,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_8"
+            }
+          },
+          {
+            "id": "ROR_B8",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2023-02-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.85,
+            "attributes": {
+              "textual_area_sqm": 40468.6,
+              "owner_id": "UID_8"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A8",
+            "target": "ROR_B8",
+            "relation": "CONTRADICTS_AREA"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1009",
+      "verification_state_expected": "DISPUTE SUSPECTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "ROR_A9",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2010-01-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_OLD_9"
+            }
+          },
+          {
+            "id": "DEED_B9",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_THIEF_9"
+            }
+          },
+          {
+            "id": "DEED_C9",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_BUYER_9"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_B9",
+            "target": "ROR_A9",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_C9",
+            "target": "ROR_A9",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_B9",
+            "target": "DEED_C9",
+            "relation": "DUPLICATE_REGISTRATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1010",
+      "verification_state_expected": "FORMALLY DISPUTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A10",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2020-05-12T00:00:00Z",
+            "version": 1,
+            "confidence": 0.98,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_10"
+            }
+          },
+          {
+            "id": "ROR_B10",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2020-06-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_10"
+            }
+          },
+          {
+            "id": "COURT_C10",
+            "type": "Court_Case",
+            "source_authority": "Civil_Court",
+            "timestamp": "2021-04-10T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "status": "ACTIVE_INJUNCTION"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A10",
+            "target": "ROR_B10",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "COURT_C10",
+            "target": "ROR_B10",
+            "relation": "INJUNCTION_AGAINST_TITLE"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1011",
+      "verification_state_expected": "VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A11",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2022-01-15T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_11"
+            }
+          },
+          {
+            "id": "ROR_B11",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2022-02-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_11"
+            }
+          },
+          {
+            "id": "CAD_C11",
+            "type": "Cadastral_Polygon",
+            "source_authority": "Survey",
+            "timestamp": "2022-03-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "spatial_extent": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      80,
+                      27
+                    ],
+                    [
+                      80.001,
+                      27
+                    ],
+                    [
+                      80.001,
+                      27.001
+                    ],
+                    [
+                      80,
+                      27.001
+                    ],
+                    [
+                      80,
+                      27
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A11",
+            "target": "ROR_B11",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "ROR_B11",
+            "target": "CAD_C11",
+            "relation": "CLAIMS_GEOMETRY"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1012",
+      "verification_state_expected": "PROVISIONALLY VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "INHERIT_A12",
+            "type": "Inheritance",
+            "source_authority": "Panchayat",
+            "timestamp": "1995-05-20T00:00:00Z",
+            "version": 1,
+            "confidence": 0.6,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_12"
+            }
+          },
+          {
+            "id": "ROR_B12",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "1995-06-10T00:00:00Z",
+            "version": 2,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_12"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "INHERIT_A12",
+            "target": "ROR_B12",
+            "relation": "TRIGGERS_MUTATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1013",
+      "verification_state_expected": "INCONSISTENT",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A13",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-01-10T00:00:00Z",
+            "version": 1,
+            "confidence": 0.99,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_13"
+            }
+          },
+          {
+            "id": "ROR_B13",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2023-02-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.85,
+            "attributes": {
+              "textual_area_sqm": 40468.6,
+              "owner_id": "UID_13"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A13",
+            "target": "ROR_B13",
+            "relation": "CONTRADICTS_AREA"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1014",
+      "verification_state_expected": "DISPUTE SUSPECTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "ROR_A14",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2010-01-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_OLD_14"
+            }
+          },
+          {
+            "id": "DEED_B14",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_THIEF_14"
+            }
+          },
+          {
+            "id": "DEED_C14",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_BUYER_14"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_B14",
+            "target": "ROR_A14",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_C14",
+            "target": "ROR_A14",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_B14",
+            "target": "DEED_C14",
+            "relation": "DUPLICATE_REGISTRATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1015",
+      "verification_state_expected": "FORMALLY DISPUTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A15",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2020-05-12T00:00:00Z",
+            "version": 1,
+            "confidence": 0.98,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_15"
+            }
+          },
+          {
+            "id": "ROR_B15",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2020-06-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_15"
+            }
+          },
+          {
+            "id": "COURT_C15",
+            "type": "Court_Case",
+            "source_authority": "Civil_Court",
+            "timestamp": "2021-04-10T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "status": "ACTIVE_INJUNCTION"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A15",
+            "target": "ROR_B15",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "COURT_C15",
+            "target": "ROR_B15",
+            "relation": "INJUNCTION_AGAINST_TITLE"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1016",
+      "verification_state_expected": "VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A16",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2022-01-15T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_16"
+            }
+          },
+          {
+            "id": "ROR_B16",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2022-02-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_16"
+            }
+          },
+          {
+            "id": "CAD_C16",
+            "type": "Cadastral_Polygon",
+            "source_authority": "Survey",
+            "timestamp": "2022-03-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "spatial_extent": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      80,
+                      32
+                    ],
+                    [
+                      80.001,
+                      32
+                    ],
+                    [
+                      80.001,
+                      32.001
+                    ],
+                    [
+                      80,
+                      32.001
+                    ],
+                    [
+                      80,
+                      32
+                    ]
+                  ]
+                ]
+              }
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A16",
+            "target": "ROR_B16",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "ROR_B16",
+            "target": "CAD_C16",
+            "relation": "CLAIMS_GEOMETRY"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1017",
+      "verification_state_expected": "PROVISIONALLY VERIFIED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "INHERIT_A17",
+            "type": "Inheritance",
+            "source_authority": "Panchayat",
+            "timestamp": "1995-05-20T00:00:00Z",
+            "version": 1,
+            "confidence": 0.6,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_17"
+            }
+          },
+          {
+            "id": "ROR_B17",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "1995-06-10T00:00:00Z",
+            "version": 2,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 8093.72,
+              "owner_id": "UID_17"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "INHERIT_A17",
+            "target": "ROR_B17",
+            "relation": "TRIGGERS_MUTATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1018",
+      "verification_state_expected": "INCONSISTENT",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A18",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-01-10T00:00:00Z",
+            "version": 1,
+            "confidence": 0.99,
+            "attributes": {
+              "textual_area_sqm": 4046.86,
+              "owner_id": "UID_18"
+            }
+          },
+          {
+            "id": "ROR_B18",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2023-02-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.85,
+            "attributes": {
+              "textual_area_sqm": 40468.6,
+              "owner_id": "UID_18"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A18",
+            "target": "ROR_B18",
+            "relation": "CONTRADICTS_AREA"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1019",
+      "verification_state_expected": "DISPUTE SUSPECTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "ROR_A19",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2010-01-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_OLD_19"
+            }
+          },
+          {
+            "id": "DEED_B19",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_THIEF_19"
+            }
+          },
+          {
+            "id": "DEED_C19",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2023-08-15T00:00:00Z",
+            "version": 1,
+            "confidence": 0.95,
+            "attributes": {
+              "textual_area_sqm": 2000,
+              "owner_id": "UID_BUYER_19"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_B19",
+            "target": "ROR_A19",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_C19",
+            "target": "ROR_A19",
+            "relation": "CONFLICTING_CLAIMS"
+          },
+          {
+            "source": "DEED_B19",
+            "target": "DEED_C19",
+            "relation": "DUPLICATE_REGISTRATION"
+          }
+        ]
+      }
+    },
+    {
+      "ulpin": "ULPIN_2026_1020",
+      "verification_state_expected": "FORMALLY DISPUTED",
+      "evidence_graph": {
+        "nodes": [
+          {
+            "id": "DEED_A20",
+            "type": "Sale_Deed",
+            "source_authority": "SRO",
+            "timestamp": "2020-05-12T00:00:00Z",
+            "version": 1,
+            "confidence": 0.98,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_20"
+            }
+          },
+          {
+            "id": "ROR_B20",
+            "type": "RoR",
+            "source_authority": "Revenue",
+            "timestamp": "2020-06-01T00:00:00Z",
+            "version": 1,
+            "confidence": 0.9,
+            "attributes": {
+              "textual_area_sqm": 5000,
+              "owner_id": "UID_20"
+            }
+          },
+          {
+            "id": "COURT_C20",
+            "type": "Court_Case",
+            "source_authority": "Civil_Court",
+            "timestamp": "2021-04-10T00:00:00Z",
+            "version": 1,
+            "confidence": 1,
+            "attributes": {
+              "status": "ACTIVE_INJUNCTION"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "DEED_A20",
+            "target": "ROR_B20",
+            "relation": "TRIGGERS_MUTATION"
+          },
+          {
+            "source": "COURT_C20",
+            "target": "ROR_B20",
+            "relation": "INJUNCTION_AGAINST_TITLE"
+          }
+        ]
+      }
+    }
+  ]
+}

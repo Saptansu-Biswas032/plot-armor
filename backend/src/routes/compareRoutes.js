@@ -10,13 +10,21 @@ const { getDB } = require('../db/database');
 // Replace the old /execute route with this database-connected version
 router.post('/execute', async (req, res) => {
     try {
-        const { parcel_id, ulpin, legacyPolygon, surveyPolygon, surveyorId } = req.body;
+        const { parcel_id, legacyPolygon, surveyPolygon, surveyorId } = req.body;
         
         if (!legacyPolygon || !surveyPolygon || !parcel_id) {
             return res.status(400).json({ error: "Missing required geospatial payload or parcel_id" });
         }
 
         const db = getDB();
+
+        const parcel = await db.get(
+            `SELECT parcel_id, ulpin FROM parcel WHERE parcel_id = ?`,
+            [parcel_id]
+        );
+        if (!parcel) {
+            return res.status(404).json({ error: 'Unknown parcel_id. Select a registered ULPIN before submitting evidence.' });
+        }
 
         // 1. Run the Math Brain
         const verificationResult = runSpatialVerification(legacyPolygon, surveyPolygon);
@@ -46,6 +54,7 @@ router.post('/execute', async (req, res) => {
         // 4. Send response to VeriApp Edge Client
         res.status(200).json({
             message: "Pipeline Phase 2-4 Complete. Evidence locked.",
+            parcel: { parcel_id: parcel.parcel_id, ulpin: parcel.ulpin },
             state: verificationResult.decision,
             metrics: verificationResult
         });
