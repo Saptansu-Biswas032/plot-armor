@@ -1,81 +1,222 @@
 # 🛡️ Plot-Armor: 7-Phase Trust Pipeline for Land Redressal
 
-**A verifiable, math-driven architecture resolving India's DILRMP Spatial Geometry disputes.**
+**A verifiable, math-driven architecture resolving India's DILRMP spatial boundary disputes.**
 
-[![Architecture: 7-Phase State Machine](https://img.shields.io/badge/Architecture-State_Machine-blue)](#)
+[![Architecture: 7-Phase State Machine](https://img.shields.io/badge/Architecture-7--Phase_State_Machine-blue)](#)
 [![Data Model: ISO 19152-1 LADM](https://img.shields.io/badge/Standard-ISO_19152--1_LADM-green)](#)
-[![Math Engine: Turf.js / Jaccard Index](https://img.shields.io/badge/Spatial-Turf.js%20%7C%20Jaccard_Index-red)](#)
+[![Spatial Engine: Turf.js / Jaccard Index](https://img.shields.io/badge/Spatial-Turf.js%20%7C%20Jaccard_Index-red)](#)
+[![Graph AI: Custody Evaluator](https://img.shields.io/badge/Graph_AI-Temporal_Custody_Graph-purple)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](#)
 
 ---
 
 ## 📌 Executive Summary
 
-While India has successfully digitized **~95%** of textual land records under the DILRMP, the digitization of spatial cadastral maps remains severely fragmented. Merely converting inaccurate paper maps to digital polygons creates a **Digitization Paradox**: high-precision freezing of historical errors. This directly causes F-Line (boundary) disputes and clogs the legal system.
+While India has successfully digitized **~95%** of textual land records under the **Digital India Land Records Modernization Programme (DILRMP)**, the digitization of spatial cadastral maps remains severely fragmented. Merely vectorizing historical paper maps creates a **Digitization Paradox**: freezing century-old colonial measurement errors with high-precision digital coordinates. This causes widespread F-Line (Field Measurement Book) boundary disputes and overwhelms the revenue and judicial systems.
 
-**Plot-Armor** is an Enterprise MVP resolving this gap by moving away from "presumptive title" logic to a rigorous mathematical **Trust Pipeline**. It ensures that uncertain heterogeneous field evidence goes through a controlled transition into a verified legal state.
+**Plot-Armor** replaces traditional "presumptive title" CRUD databases with a rigorous mathematical **7-Phase Trust Pipeline**. It ensures that uncertain heterogeneous field evidence transitions into a verified, immutable legal state through deterministic spatial geometry checks, custody graph evaluation, and human-in-the-loop adjudication.
 
 ---
 
-## 🏗️ Architectural Innovation: The Trust Pipeline
+## 🏗️ Core Architectural Innovation
 
-Unlike standard CRUD web applications, Plot-Armor treats land-boundary verification as a strictly gated State-Machine traversing 7 distinct phases.
+Unlike standard web applications that permit un-gated database modifications (`POST /update-land`), Plot-Armor treats land record mutation as a strictly governed **Gated State Machine**:
 
-**The Verification Flowchart:**
-*   📱 **[VeriApp Mobile Edge (Surveyor)]**
-    *   ⬇️ *(Phase 1: Observe) — Cryptographic GNSS Evidence*
-*   ⚙️ **[Core API Gateway / Node.js]**
-    *   🔍 *(Phase 2: Compare) — SDI Spatial Engine*
-    *   📊 *(Phase 3: Classify) — Jaccard Index Thresholding*
-    *   ⬇️ *System forks based on risk threshold:*
-        *   🔴 **Path A (>5% Risk):** *(Phase 5: Human Verify)* ➔ 🏛️ **[Tahsildar Portal]**
-        *   🟢 **Path B (<5% Risk):** *(Phase 7: DLT Anchor)* ➔ 🛡️ **[Trusted State]**
+```
+                               THE 7-PHASE TRUST PIPELINE
+                               
+  +-----------------------------------------------------------------------------------+
+  | Track A: Temporal Custody Graph (TCG) AI                                          |
+  | [Phase 0: Ingest ULPIN] ---> [Phase 1A: Construct Heterogeneous Evidence Graph]    |
+  |                              ---> [Graph AI Evaluator: Detect Injunctions/Fraud]   |
+  +-----------------------------------------------------------------------------------+
+                                            |
+                                            v
+  +-----------------------------------------------------------------------------------+
+  | Track B: Spatial Data Integrity (SDI) Engine                                      |
+  | [Phase 1B: Hardware GNSS Field Observation] ---> [Phase 2: Topology Validation]    |
+  | ---> [Phase 3: Spatial SDI Math (IoU, Hausdorff, Centroid)]                        |
+  | ---> [Phase 4: Compute Risk Score & Classify Bounds]                              |
+  +-----------------------------------------------------------------------------------+
+                                            |
+                                            v
+                  +---------------------------------------------------+
+                  |      Dispute Evidence & Routing Engine (DERE)     |
+                  |             D = f(S, T, L, E, H)                  |
+                  +---------------------------------------------------+
+                     /                      |                       \
+        Risk <= 5%  /          Risk 5-20%   |            Risk > 20%  \
+       Clean Graph /       Transactional Gap|        Court Injunction \
+                  v                         v                          v
+       +--------------------+     +-------------------+      +--------------------+
+       | Fast-Track Approve |     | Phase 5: Revenue  |      | Phase 6B: Tribunal |
+       |                    |     | Adjudication Desk |      | Judicial Hold      |
+       +--------------------+     +-------------------+      +--------------------+
+                  |                         |                          |
+                  |               [Phase 6A: Certify]                  |
+                  |                         |                          |
+                  +----------------> [Phase 7] <-----------------------+
+                                        | (Asset Frozen if Disputed)
+                                        v
+                          [Consortium DLT State Anchor]
+                          [P_t(G,O,R,E,S) -> P_t+1]
+```
 
-### 1. ISO 19152-1 Database Layer (SQLite MVP)
-The data layer rigorously adheres to the **Land Administration Domain Model (LADM)**. Instead of a flat table, it explicitly tracks:
-*   **Physical Spatial Units:** The actual land parcel.
-*   **Temporal Human Rights:** Current and historical ownership.
-*   **Field Evidence:** Spatial observations and GNSS coordinates.
-*   **Mathematical Decision-States:** Verification and risk outcomes.
+---
 
-### 2. The Spatial SDI Engine (Math over Maps)
-Comparing pure parcel area is mathematically flawed (e.g., a 1-acre plot can shift 50 meters into a neighbor's property and remain 1-acre, masking a false boundary). Plot-Armor mitigates this using the **Spatial Discrepancy Index (SDI)** driven by:
-*   **Intersection over Union (Jaccard Index / IoU)**
-*   **Centroid Displacement Vectors**
-*   **Area Ratios & Hausdorff Distance Approximations**
+## 🔬 Subsystem & Algorithmic Engines
 
-**The Logic:** If the mathematical risk exceeds a **5%** threshold, the pipeline denies automatic registration and escalates to a Class II dispute. 
+### 1. Spatial SDI Engine (`backend/src/engines/spatialEngine.js`)
+Resolves the **Equal Area Paradox** (where an encroached plot shifted 30m into a neighbor's property retains identical flat surface area):
+* **Topology Validation:** Runs `turf.kinks()` to block self-intersecting polygon anomalies.
+* **Intersection over Union (IoU / Jaccard Index):**
+  $$\text{IoU} = \frac{\text{Area}(A \cap B)}{\text{Area}(A \cup B)} = \frac{\text{Area}(A \cap B)}{\text{Area}(A) + \text{Area}(B) - \text{Area}(A \cap B)}$$
+* **Centroid Displacement Vector:** Geodesic distance between polygon centers ($C_A, C_B$) over WGS84.
+* **Hausdorff Approximation:** Boundary distortion quantification:
+  $$H_{\text{approx}} = D_{\text{centroid}} \times \left(1 + \frac{|\text{Area}(A) - \text{Area}(B)|}{\text{Area}(A)}\right)$$
+* **Mathematical Risk Score:**
+  $$\text{Risk\_Score} = (1 - \text{IoU}) \times 100$$
+  * $\le 5\% \implies \mathbf{CLEAR}$ (Automated Fast-Track)
+  * $5\% \text{ to } 20\% \implies \mathbf{UNCERTAIN}$ (Revenue Officer Review)
+  * $> 20\% \implies \mathbf{DISPUTED}$ (Escalate / Asset Freeze)
 
-$Risk\_Score = (1 - IoU) \times 100$
+### 2. Temporal Custody Graph (TCG) AI (`backend/src/engines/graphEngine.js`)
+* Evaluates multi-source institutional record linkages across Sub-Registrar Offices (Deeds), Revenue Departments (RoR), Survey Departments (Cadastre), and Civil Courts.
+* Flags active injunctions, title fraud / duplicate registrations, clerical area mismatches, and broken inheritance chains.
 
-### 3. Distributed Edge Clients
+### 3. Dispute Evidence & Routing Engine (`backend/src/engines/dereEngine.js`)
+* Implements the multi-variable administrative routing function $\mathcal{D} = f(\mathcal{S}, \mathcal{T}, \mathcal{L}, \mathcal{E}, \mathcal{H})$ routing cases to **Gram Panchayat**, **Survey & Settlement Dept**, **Tahsildar Revenue Office**, or the **District Civil Court**.
 
-| Client | Type | Core Function |
+### 4. Consortium DLT State Transition (`backend/src/routes/anchorRoutes.js`)
+* Executes state transition $P_t(G, O, R, E, S) \longrightarrow P_{t+1}(G, O, R, E, S)$.
+* **Privacy-Preserving Hashing:** In compliance with DPDP Act 2023 and Section 16 directives, **zero PII or raw coordinates are placed on-chain**. Only irreversible SHA-256 digests (`geometry_hash`, `evidence_hash`, `ownership_structure_hash`) are anchored.
+
+---
+
+## 🏛️ ISO 19152-1 LADM Schema Architecture
+
+The persistent database layer (`backend/src/db/database.js`) strictly mirrors the international **Land Administration Domain Model**:
+
+| LADM Core Package | LADM Class | Database Table | Description |
+| :--- | :--- | :--- | :--- |
+| **Spatial Unit Package** | `LA_SpatialUnit` | `parcel` | Physical parcel geometry (GeoJSON), area, version, status |
+| **Party Package** | `LA_Party` / `LA_RRR` | `ownership` | Fractional rights, owner IDs, valid temporal date intervals |
+| **Administrative Package** | `LA_BAUnit` | `transaction_chain` | Deed and mutation transactions, authority references |
+| **Surveying Package** | `LA_SpatialSource` | `spatial_observation` | Field GNSS captures, device telemetry, surveyor signatures |
+| **Audit Package** | Custom Extension | `verification` & `judicial_docket` | Mathematical metrics, decision matrix, active court holds |
+
+---
+
+## 💻 Unified 4-Persona Workspace
+
+The zero-build edge frontend (`clients/unified-portal/`) provides an accessible, ultra-lightweight interface for all stakeholders:
+
+```
++-------------------------------------------------------------------------------------+
+|                           PLOT-ARMOR UNIFIED PORTAL                                 |
++-------------------------------------------------------------------------------------+
+|  [01] Record Assessment  | Ingests 35 ULPINs across 9 States; builds visual         |
+|       (Track A)          | evidence graphs & exports audit PDF reports.             |
++--------------------------+----------------------------------------------------------+
+|  [02] Field Verification | Hardware GNSS selector (RTK ±2cm, DGPS ±50cm, Handheld),  |
+|       (Track B)          | cryptographic device signing & live spatial SVG overlay. |
++--------------------------+----------------------------------------------------------+
+|  [03] Revenue Desk       | Real-time searchable queue for Tahsildars to certify     |
+|       (Phase 5-7)        | clear parcels or escalate disputes; generates DLT receipt.|
++--------------------------+----------------------------------------------------------+
+|  [04] Tribunal Docket    | Judicial hold dashboard; locks disputed titles and       |
+|       (Phase 6B)         | dispatches legal summonses.                              |
++-------------------------------------------------------------------------------------+
+```
+
+---
+
+## 🚀 Quickstart & Setup
+
+### Prerequisites
+* **Node.js** (v18+ recommended)
+* **npm** (v9+)
+
+### Step 1: Install & Launch Backend Gateway
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+npm install
+
+# Initialize and seed the ISO LADM database (35 multi-state parcels)
+npm run seed
+
+# Start API Gateway on http://localhost:8080
+npm start
+```
+
+### Step 2: Open the Unified Portal
+Once the backend server is running, simply open your browser and navigate to:
+```
+http://localhost:8080
+```
+*(The portal is served directly by the backend gateway, preventing cross-origin and file:// path issues).*
+
+### Step 3: Execute Algorithmic Test Suite
+```bash
+# Run unit tests validating spatial math and graph evaluation engines
+node --test backend/test/engines.test.js
+```
+
+---
+
+## 📂 Project Repository Structure
+
+```
+plot-armor/
+├── CODE_REVIEW.md                   # Complete 5-page enterprise architectural review & auditor Q&A
+├── README.md                        # Comprehensive system documentation & quickstart
+├── package.json                     # Root configuration
+├── backend/
+│   ├── package.json                 # Backend dependencies (Express, Turf.js, SQLite3, Helmet)
+│   ├── src/
+│   │   ├── app.js                   # Express application & defensive middleware shield
+│   │   ├── server.js                # Server entrypoint (Port 8080)
+│   │   ├── db/
+│   │   │   ├── database.js          # ISO 19152-1 LADM SQLite schema & 35-parcel seeder
+│   │   │   └── plotarmor_mvp.sqlite # Active local database instance
+│   │   ├── engines/
+│   │   │   ├── spatialEngine.js     # Spatial SDI Engine (IoU, Hausdorff, Centroid shift)
+│   │   │   ├── graphEngine.js       # Temporal Custody Graph (TCG) AI Evaluator
+│   │   │   └── dereEngine.js        # Dispute Evidence & Routing Engine (DERE)
+│   │   └── routes/
+│   │       ├── ulpinRoutes.js       # Track A: ULPIN registry & graph assessment routes
+│   │       ├── compareRoutes.js     # Track B: Spatial observation comparison routes
+│   │       ├── verifyRoutes.js      # Phase 5-6: Revenue adjudication & judicial dockets
+│   │       └── anchorRoutes.js      # Phase 7: DLT consortium state transition anchoring
+│   └── test/
+│       └── engines.test.js          # Native automated test suite for math & graph engines
+├── clients/
+│   └── unified-portal/
+│       ├── index.html               # 4-Persona Unified Portal shell (Zero-build HTML5)
+│       ├── styles.css               # Responsive design system & custom SVG cadastral styling
+│       └── app.js                   # Client-side state manager, API bridge & workflow engine
+└── data/
+    ├── evidence_graphs.json         # Synthetic test suite of 20 edge-case custody graphs
+    └── generateEvidenceGraphs.js    # Graph dataset generation utility
+```
+
+---
+
+## 🔮 Production Hardening Roadmap
+
+| Vector | Hackathon MVP | Production Target |
 | :--- | :--- | :--- |
-| **VeriApp** | Offline-First Mobile Terminal | Utilizes simulated Secure Enclaves (TEE) to sign payloads, strictly binding surveyor identity to GNSS collection and eliminating "desk surveys" or GPS spoofing. |
-| **Officer-UI** | Administrative Dashboard | A high-speed interface for State Revenue officers to intercept mathematically disputed F-Line boundaries and dictate state transitions. |
+| **Spatial Engine** | In-Memory Turf.js | **PostgreSQL 16 + PostGIS cluster** (`ST_Intersection`, `ST_HausdorffDistance`, R-Tree spatial indexes). |
+| **Silicon Security** | Simulated device signature | **FIDO2 / WebAuthn standard** utilizing Android StrongBox / iOS Secure Enclave hardware chips. |
+| **Distributed Ledger** | SHA-256 Consortium simulation | **Hyperledger Fabric 2.5 channel** with RAFT consensus across Revenue, Survey, and Registration nodes. |
+| **Document Ingestion** | Synthetic graph generator | **Indic OCR + fine-tuned NER models** for automated vernacular deed extraction (7/12, Patta, Chitta). |
 
 ---
 
-## 🚀 Execution & Setup (Hackathon MVP)
+## 📜 License
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-To execute the Trust Pipeline locally for evaluation, follow these two steps:
-
-### Step 1: Initialize the Core Backend
-The API Gateway will launch on `http://localhost:8080`, automatically migrating the ISO LADM SQLite Schema. Navigate to your backend folder and run your node commands:
-*   `npm install`
-*   `npm start`
-
-### Step 2: Launch Client Terminals (No build required)
-Because Plot-Armor prioritizes deployment simplicity at the edge, the UI clients utilize native web technologies (Tailwind CDN, Leaflet.js). Simply open the files directly in your browser:
-*   **The Surveyor Field UI:** Open `clients/veriapp-mobile/index.html` 
-*   **The Revenue Officer Dashboard:** Open `clients/officer-ui/index.html` 
-
----
-
-## 🔮 Scalability & Future Roadmap
-
-| Upgrade Vector | Current MVP Implementation | Future Production Target |
-| :--- | :--- | :--- |
-| **Database Expansion** | SQLite | **PostgreSQL + PostGIS cluster** to allow in-database OGC spatial geometry executions at a national scale. |
-| **Silicon Biometrics** | Simulated TEE Hook | **FIDO2/WebAuthn APIs** to force native iOS Secure Enclave / Android TrustZone hardware to generate asymmetric keys, digitally signing GNSS payloads on the silicon layer. |
-| **Ledger Infrastructure**| Local SHA-256 state anchors | **Hyperledger Fabric** permissioned network to enable cross-departmental data consensus. |
+*Plot-Armor: Bringing mathematical certainty, institutional accountability, and legal defensibility to land records.*
