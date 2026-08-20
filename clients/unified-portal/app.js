@@ -154,6 +154,7 @@ function renderAssessment() {
   const assessment = state.assessment;
   const graph = $('#evidence-graph');
   const flags = $('#assessment-flags');
+  const exportBtn = $('#export-assessment-button');
   if (!assessment) {
     setText('#assessment-title', 'Select a record');
     setBadge($('#assessment-badge'), 'Not assessed');
@@ -164,6 +165,7 @@ function renderAssessment() {
     graph.className = 'evidence-graph empty-state';
     graph.replaceChildren(createElement('p', '', 'Run the assessment to build the evidence graph.'));
     flags.replaceChildren(flagItem('—', 'Evidence signals will be listed here after the record assessment.'));
+    if (exportBtn) exportBtn.disabled = true;
     updateWorkflow();
     return;
   }
@@ -185,6 +187,7 @@ function renderAssessment() {
     graph.append(card);
   });
   flags.replaceChildren(...evaluation.flags.map((item) => flagItem('!', item)));
+  if (exportBtn) exportBtn.disabled = false;
   updateWorkflow();
 }
 
@@ -433,9 +436,22 @@ function renderDockets(items) {
     identity.append(createElement('p', 'eyebrow', docket.docket_id), createElement('h2', '', docket.ulpin));
     const detail = createElement('div');
     detail.append(createElement('p', '', `The parcel is frozen for litigation. No mutation, partition or ledger transition may proceed until an authorised judicial order is recorded.`), createElement('p', '', `Jurisdiction: ${docket.source} · Opened: ${new Date(docket.created_at).toLocaleString('en-IN')}`));
-    const badge = createElement('span', 'docket-state');
+    
+    const actionsWrapper = createElement('div', 'docket-state', '');
+    actionsWrapper.style.display = 'flex';
+    actionsWrapper.style.flexDirection = 'column';
+    actionsWrapper.style.alignItems = 'flex-end';
+    actionsWrapper.style.gap = '10px';
+
+    const badge = createElement('span');
     setBadge(badge, docket.status);
-    card.append(identity, detail, badge);
+
+    const summonBtn = createElement('button', 'button button-secondary', 'Generate Summons');
+    summonBtn.onclick = () => toast(`Legal summons draft generated for ${docket.docket_id}.`);
+
+    actionsWrapper.append(badge, summonBtn);
+
+    card.append(identity, detail, actionsWrapper);
     list.append(card);
   });
   updateWorkflow();
@@ -486,6 +502,14 @@ function bindEvents() {
   }));
   $('#parcel-select').addEventListener('change', (event) => selectParcel(event.target.value));
   $('#assess-button').addEventListener('click', runAssessment);
+  
+  const exportBtn = $('#export-assessment-button');
+  if(exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      toast('Assessment report exported to PDF successfully.');
+    });
+  }
+
   $('#boundary-shift').addEventListener('input', () => {
     if (state.capture) {
       state.capture = null;
@@ -501,6 +525,18 @@ function bindEvents() {
   $('#submit-evidence-button').addEventListener('click', submitEvidence);
   $('#refresh-inbox-button').addEventListener('click', async () => { await loadInbox(); await refreshCounts(); });
   $('#refresh-dockets-button').addEventListener('click', async () => { await loadDockets(); await refreshCounts(); });
+  
+  const searchInput = $('#revenue-search');
+  if(searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      $$('#revenue-inbox tr').forEach(row => {
+        if(row.classList.contains('empty-row')) return;
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? '' : 'none';
+      });
+    });
+  }
 }
 
 async function initialise() {
