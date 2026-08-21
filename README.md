@@ -14,7 +14,21 @@
 
 While India has successfully digitized **~95%** of textual land records under the **Digital India Land Records Modernization Programme (DILRMP)**, the digitization of spatial cadastral maps remains severely fragmented. Merely vectorizing historical paper maps creates a **Digitization Paradox**: freezing century-old colonial measurement errors with high-precision digital coordinates. This causes widespread F-Line (Field Measurement Book) boundary disputes and overwhelms the revenue and judicial systems.
 
-**Plot-Armor** replaces traditional "presumptive title" CRUD databases with a rigorous mathematical **7-Phase Trust Pipeline**. It ensures that uncertain heterogeneous field evidence transitions into a verified, immutable legal state through deterministic spatial geometry checks, custody graph evaluation, and human-in-the-loop adjudication.
+**Plot-Armor** replaces traditional "presumptive title" CRUD databases with a rigorous mathematical **7-Phase Trust Pipeline**. It ensures that uncertain heterogeneous field evidence transitions into a verified, immutable legal state through deterministic spatial geometry checks, temporal custody graph AI, and transparent judicial holds.
+
+---
+
+## 🔐 7 Principles of Trust (Derived from TEE)
+
+Plot-Armor is heavily inspired by hardware **Trusted Execution Environments (TEE)**. We abstract physical silicon guarantees into a software-defined architecture to secure the nation's critical land infrastructure:
+
+1. **Confidentiality (Data in Use Protection):** PII and sensitive ownership attributes are stripped before processing. Only cryptographically hashed identifiers traverse external layers and consortium states.
+2. **Execution Integrity:** The Spatial Data Integrity (SDI) and Dispute Evidence Routing Engine (DERE) execute deterministically; the same geometries and inputs mathematically guarantee the same Risk Score and routing output.
+3. **Authenticity & Attestation:** Field verifications demand hardware-signed GNSS payloads. The system enforces cryptographic attestation mapping Surveyor UID, Device IMEI, and GNSS accuracy parameters to every spatial observation.
+4. **Isolation:** The 7-Phase State Machine prevents arbitrary execution paths. A phase transition (e.g., from Revenue Desk to Consortium Ledger) cannot occur without clearing the preceding gating metrics and judicial holds.
+5. **Non-repudiation:** Every revenue certification generates an immutable receipt. A Tahsildar cannot retrospectively deny their approval of a disputed boundary once anchored.
+6. **State Continuity (Anti-Rollback):** Strict monotonic version control ($P_v \rightarrow P_{v+1}$) prevents malicious rollback of an ULPIN state to a previous contested boundary.
+7. **Auditability:** Complete cryptographic trails of mathematical metrics (IoU, Centroid Delta) are anchored alongside the decision, making the exact justification for boundary approval or rejection mathematically verifiable.
 
 ---
 

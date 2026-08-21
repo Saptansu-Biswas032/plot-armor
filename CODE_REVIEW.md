@@ -95,7 +95,19 @@ The persistent data model in `backend/src/db/database.js` strictly maps to the i
 | **Party Package** | `LA_Party` / `LA_RRR` | `ownership` | `owner_id`, `parcel_id`, `share` (fractional right), `start_date`, `end_date` |
 | **Administrative Package** | `LA_BAUnit` | `transaction_chain` | `transaction_id`, `parcel_id`, `type` (Mutation/Sale), `source_document`, `authority` |
 | **Surveying Package** | `LA_Point` / `LA_SpatialSource` | `spatial_observation` | `id`, `parcel_id`, `geometry`, `accuracy`, `device`, `surveyor`, `timestamp` |
-| **Decision/Audit Package** | Custom LADM Extension | `verification` & `judicial_docket` | `iou`, `hausdorff_distance`, `area_ratio`, `risk_score`, `decision`, `docket_id`, `status` |
+| **Decision/Audit Package** | Custom Extension | `verification` & `judicial_docket` | Mathematical metrics, decision matrix, active court holds |
+
+---
+
+### 1.4 The 7 Principles of Trust (Derived from TEE)
+To secure the nation's critical land infrastructure, Plot-Armor abstracts the physical silicon guarantees of **Trusted Execution Environments (TEE)** into a software-defined architecture:
+1. **Confidentiality (Data in Use):** PII (Names, Aadhaars) is stripped. Only irreversible SHA-256 digests (`geometry_hash`, `evidence_hash`) traverse external layers.
+2. **Execution Integrity:** The Spatial Data Integrity (SDI) and Dispute Engine (DERE) execute deterministically; identical geometries mathematically guarantee identical Risk Scores and routing.
+3. **Authenticity & Attestation:** Field verifications demand hardware-signed GNSS payloads, mapping Surveyor UID, Device IMEI, and GNSS accuracy parameters cryptographically.
+4. **Isolation:** The 7-Phase State Machine prevents arbitrary execution paths. A phase transition (e.g., Revenue Desk to Ledger) cannot occur without clearing preceding gating metrics.
+5. **Non-repudiation:** Revenue certifications generate immutable, dual-signature receipts. A Tahsildar cannot retrospectively deny their approval of a disputed boundary once anchored.
+6. **State Continuity (Anti-Rollback):** Strict monotonic version control ($P_v \rightarrow P_{v+1}$) prevents malicious rollback of an ULPIN state to a previously contested boundary.
+7. **Auditability:** Complete cryptographic trails of mathematical metrics (IoU, Centroid Delta) are anchored alongside the decision, making the exact mathematical justification verifiable.
 
 ---
 
@@ -247,7 +259,7 @@ The front-end client (`clients/unified-portal/`) is deliberately built with **va
 
 ---
 
-### 3.2 The 4 Persona Workspaces Breakdown
+### 3.2 The 5 Persona Workspaces Breakdown
 
 ```mermaid
 graph TD
@@ -275,6 +287,12 @@ graph TD
         D2 --> D3[Trigger Legal Summons Generator]
         D3 --> D4[Asset Freeze Status Locked]
     end
+    
+    subgraph P5 [Persona 5: Bhoomi Citizen Portal]
+        E1[Live 50-Profile Citizen Dropdown] --> E2[Aadhaar+OTP Login Simulation]
+        E2 --> E3[View Land Holdings & Download e-Passbook PDF]
+        E3 --> E4[File Real-Time Grievances (SSE Webhooks)]
+    end
 ```
 
 #### 1. Record Assessment Desk (Cadastral Officer)
@@ -298,6 +316,12 @@ graph TD
 * **Automated Docketing:** Creates unique legal docket IDs (e.g., `CIVIL-2026-004`).
 * **Title Freeze Enforcement:** Restricts downstream ledger mutations until a judicial decree is registered.
 * **Summons Dispatcher:** Generates legal summonses with automated notice triggers.
+
+#### 5. Bhoomi Citizen Portal (Landowner & Citizen)
+* **Dynamic Database Binding:** Fetches real-time profiles populated with 127 randomized parcels spanning 50 citizen identities.
+* **e-Passbook Generation (PDFKit):** Dynamically builds and exports LADM-compliant Trust Reports in standard PDF format.
+* **Real-Time Webhooks (SSE):** Provides live Server-Sent Events (SSE) connections syncing grievance states instantly with the backend.
+* **Demo Sandbox UI:** Features a global "Purge & Reset Demo Database" button hitting the `/api/v1/debug/reset-db` endpoint to instantly clear test states for clean administrative reviews.
 
 ---
 
