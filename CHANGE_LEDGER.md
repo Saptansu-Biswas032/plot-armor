@@ -289,4 +289,7 @@ Every subsequent change made to this repository will automatically append a new 
  -   A d d e d   T a h s i l d a r   s e e d e d   p r o f i l e s   ( 1 0   p r o f i l e s   a c r o s s   5   s t a t e s )  
  -   A d d e d   G e o f e n c i n g   /   R e g i o n   S e c u r i t y   c h e c k   o n   O f f i c e r   L o g i n   c o n s t r a i n t  
  -   U p g r a d e d   G U I   f o r   S w i t c h   R o l e   &   S e c u r e   L o g o u t   b u t t o n s  
+  
+ [ C L - 0 1 1 ]  
+ -   A d d e d   ' F u t u r e   P l a n   o f   A c t i o n   &   D e e p   T e c h n o l o g i c a l   R e v i e w '   ( P a g e   6 )   t o   C O D E _ R E V I E W . m d  
  

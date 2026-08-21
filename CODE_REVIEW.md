@@ -6,12 +6,13 @@
 
 ---
 
-## 📑 TABLE OF CONTENTS (5-PAGE COMPREHENSIVE DOSSIER)
+## 📑 TABLE OF CONTENTS (6-PAGE COMPREHENSIVE DOSSIER)
 * **PAGE 1:** Executive Architecture & Domain Philosophy (ISO 19152-1 & The Digitization Paradox)
 * **PAGE 2:** Backend Infrastructure, Algorithmic Engines & Persistence Layer Deep-Dive
-* **PAGE 3:** Front-End Infrastructure, Edge Architecture & 4-Persona Unified Workspace
+* **PAGE 3:** Front-End Infrastructure, Edge Architecture & 5-Persona Unified Workspace
 * **PAGE 4:** Plausible Auditor Q&A (Technical, Regulatory, Legal, Cryptographic & Security)
 * **PAGE 5:** Gap Analysis, Production Hardening Roadmap & Formal Audit Verdict
+* **PAGE 6:** Future Plan of Action & Deep Technological Review
 
 ---
 
@@ -484,3 +485,55 @@ The core algorithmic engines were independently validated against deterministic 
 
 ### 🏆 FINAL AUDIT VERDICT: **READY FOR ENTERPRISE PILOT & SANDBOX DEPLOYMENT**
 *Plot-Armor provides a mathematically sound, legally defensible, and architecturally elegant solution to land boundary disputes under India's DILRMP framework.*
+
+
+<!-- ========================================================================= -->
+<!-- PAGE 6 -->
+<!-- ========================================================================= -->
+
+# 📄 PAGE 6: Future Plan of Action & Deep Technological Review
+
+While the Plot-Armor MVP successfully demonstrates the ISO 19152-1 state machine, mathematical validation (IoU/Hausdorff), and basic cryptographic workflows, scaling to handle India's ~100 million+ land parcels requires an aggressive enterprise roadmap. The following **Future Plan of Action** outlines the six foundational technological upgrades required for a nationwide production rollout.
+
+---
+
+### 6.1 Enterprise Consensus: Hyperledger Fabric & Raft
+* **Current State:** DLT transitions are simulated using localized SHA-256 digests anchored to an SQLite persistence layer.
+* **Future Implementation:** 
+  * **Fabric Channel Architecture:** We will deploy a permissioned **Hyperledger Fabric (v2.5+)** network. Departments (Revenue, Survey & Settlement, and Land Registry) will act as isolated peers within the same channel.
+  * **Smart Contracts (Chaincode):** The 7-Phase Trust logic will be ported to Go-based Chaincode. 
+  * **Endorsement Policy:** To prevent unilateral fraud, the endorsement policy will require `AND('RevenueMSP.peer', 'SurveyMSP.peer')`, meaning a Tahsildar cannot anchor a boundary change without the Survey Department's peer cryptographically cosigning the spatial mathematics.
+  * **Consensus:** A distributed **Raft Orderer Service** will guarantee transaction sequencing without the high energy costs of Proof-of-Work, ensuring absolute finality.
+
+### 6.2 Spatial Data Infrastructure (SDI) Upgrade: PostGIS Cluster
+* **Current State:** Geometric logic executes in Node.js memory via `Turf.js`, and geometries are stored as serialized GeoJSON strings in SQLite.
+* **Future Implementation:** 
+  * **Native C-Engine Execution:** The data layer will migrate to **PostgreSQL 16** outfitted with the **PostGIS 3.4** extension. 
+  * **R-Tree Indexing (GiST):** Bounding-box queries using native GiST indexes will allow sub-millisecond lookups of overlapping parcels (`&&` operator) across nationwide datasets.
+  * **Mathematical Offloading:** Expensive topological functions like `ST_Intersection()`, `ST_HausdorffDistance()`, and `ST_FrechetDistance()` will be offloaded to the C++ Postgres engine, vastly outperforming Node's single-threaded V8 engine when calculating Area Paradox metrics for thousands of simultaneous edge surveyor uploads.
+
+### 6.3 Zero-Trust Biometrics: Hardware-Backed FIDO2 WebAuthn
+* **Current State:** The surveyor edge simulates hardware signatures through UI interactions.
+* **Future Implementation:** 
+  * **Silicon Root of Trust:** Integration of the W3C **WebAuthn / FIDO2** standard. When a surveyor captures a GNSS point, the browser will invoke the device's Trusted Execution Environment (e.g., Android StrongBox or Apple Secure Enclave).
+  * **Cryptographic Attestation:** An asymmetric ECDSA `secp256r1` keypair generated permanently inside the secure silicon will sign the `[Lat, Lng, Accuracy, Timestamp]` payload. 
+  * **Threat Mitigation:** This completely eradicates "Desk Surveys" (GPS spoofing apps) because the geographic payload cannot be injected into the hardware signing enclave without triggering an attestation failure on the backend.
+
+### 6.4 AI-Powered Legacy Ingestion (Indic LLM / Bhashini)
+* **Current State:** Temporal Custody Graphs (TCG) are fed by clean, synthetic JSON objects.
+* **Future Implementation:** 
+  * **The Vernacular Data Problem:** Over 90% of legacy records are unstructured regional texts (7/12 extracts in Marathi, Pattas in Tamil, Adangal). 
+  * **Multimodal NLP Pipeline:** We will deploy a localized AI ingestion pipeline using **LayoutLMv3** for document segmentation and an **Indic LLM (Bhashini API)** for semantic extraction.
+  * **Entity Extraction:** Named Entity Recognition (NER) models will autonomously extract `Owner Name`, `Fractional Share`, `Survey Number`, and `Bounding Neighbours` from messy PDFs and inject them directly into our ISO 19152 Graph database nodes.
+
+### 6.5 Zero-Knowledge Proofs (ZKPs) for DPDP Privacy
+* **Current State:** While PII is stripped from the consortium ledger, verifying claims currently requires revealing the base parcel metadata to the application layer.
+* **Future Implementation:** 
+  * **Circom / ZoKrates Circuits:** To comply strictly with the 2023 Digital Personal Data Protection (DPDP) Act, we will implement Zero-Knowledge Proofs (zk-SNARKs).
+  * **Privacy-Preserving Verification:** A citizen applying for an agricultural bank loan can generate a cryptographic proof asserting: *"I own an unencumbered parcel > 2 acres in this district without active judicial holds."* The bank verifies this mathematical proof in $O(1)$ time **without ever seeing the ULPIN, the exact location, or the financial valuation of the land.**
+
+### 6.6 Continuous Earth Observation (Sentinel-2 / SAR)
+* **Current State:** Encroachments are reported manually by citizens or detected by ground surveyors.
+* **Future Implementation:** 
+  * **Automated Change Detection:** Integration with the European Space Agency's **Sentinel-2** (10m resolution optical) and ISRO Cartosat satellite APIs.
+  * **Computer Vision Pipeline:** A continuous Convolutional Neural Network (e.g., U-Net or Mask R-CNN) will overlay fresh satellite rasters against the locked Plot-Armor cadastral vectors. If a new structure or fence line breaches a verified boundary polygon, the AI automatically raises a flagged "Provisional Grievance" in the Tahsildar's queue for human review.
