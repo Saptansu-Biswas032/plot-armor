@@ -18,7 +18,7 @@ const indexHtml = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plot Armor - Enterprise Architecture</title>
+    <title>Plot Armor - INNOHACK 2.0 Presentation</title>
     
     <!-- KaTeX for Math Rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
@@ -33,160 +33,240 @@ const indexHtml = `<!DOCTYPE html>
     <nav class="sidebar">
         <div class="sidebar-header">
             <h1>Plot Armor</h1>
-            <p class="subtitle">Architectural Dossier</p>
+            <p class="subtitle">INNOHACK 2.0 Official Pitch</p>
         </div>
         <ul class="nav-links">
-            <li><a href="#first-principles" class="active"><i class="fas fa-cube"></i> First Principles</a></li>
-            <li><a href="#architecture"><i class="fas fa-network-wired"></i> Architecture</a></li>
-            <li><a href="#workflow"><i class="fas fa-tasks"></i> Procedural Workflow</a></li>
-            <li><a href="#tee"><i class="fas fa-shield-alt"></i> TEE Principles</a></li>
-            <li><a href="#webdev"><i class="fas fa-laptop-code"></i> Web Dev Principles</a></li>
-            <li><a href="#math"><i class="fas fa-subscript"></i> Math Engines</a></li>
-            <li><a href="#codebase"><i class="fas fa-folder-open"></i> Codebase Inventory</a></li>
-            <li><a href="#scalability"><i class="fas fa-rocket"></i> Scalability Roadmap</a></li>
+            <li><a href="#title-page" class="active"><i class="fas fa-home"></i> 1. Title Page</a></li>
+            <li><a href="#problem-statement"><i class="fas fa-exclamation-triangle"></i> 2. Problem Statement</a></li>
+            <li><a href="#proposed-solution"><i class="fas fa-lightbulb"></i> 3. Proposed Solution</a></li>
+            <li><a href="#technical-approach"><i class="fas fa-cogs"></i> 4. Technical Approach</a></li>
+            <li><a href="#demo-prototype"><i class="fas fa-desktop"></i> 5. Demo / Prototype</a></li>
+            <li><a href="#impact-usecases"><i class="fas fa-chart-line"></i> 6. Impact & Use Cases</a></li>
+            <li><a href="#challenges-faced"><i class="fas fa-mountain"></i> 7. Challenges</a></li>
+            <li><a href="#future-scope"><i class="fas fa-rocket"></i> 8. Future Scope</a></li>
+            <li><a href="#conclusion"><i class="fas fa-check-circle"></i> 9. Conclusion</a></li>
+            <li><a href="#acknowledgements"><i class="fas fa-users"></i> 10. Acknowledgements</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
-        <section id="first-principles" class="fade-in">
-            <h2>1. First Principles</h2>
+
+        <!-- 1. Title Page -->
+        <section id="title-page">
+            <h2>1. Title Page</h2>
+            <div class="interactive-card" style="text-align: center; padding: 4rem 2rem;">
+                <h1 style="font-size: 3rem; color: var(--accent-teal); margin-bottom: 1rem;">PLOT-ARMOR</h1>
+                <h3 style="color: var(--primary-dark); font-size: 1.5rem; margin-bottom: 2rem;">7-Phase Trust Pipeline for Land Redressal</h3>
+                
+                <table class="code-table" style="margin: 0 auto; max-width: 600px; font-size: 1.1rem;">
+                    <tr>
+                        <th>Hackathon Name</th>
+                        <td>INNOHACK 2.0</td>
+                    </tr>
+                    <tr>
+                        <th>Track Chosen</th>
+                        <td>GovTech & Blockchain (Web3)</td>
+                    </tr>
+                    <tr>
+                        <th>Problem Statement Title</th>
+                        <td>Digital Land Record Management and Grievance Redressal System</td>
+                    </tr>
+                    <tr>
+                        <th>Team Name</th>
+                        <td><strong>Quintex</strong></td>
+                    </tr>
+                    <tr>
+                        <th>YUKTI INNOVATION ID</th>
+                        <td>IR2026-1042201</td>
+                    </tr>
+                    <tr>
+                        <th>Team Members</th>
+                        <td>
+                            &bull; Saptansu Biswas (26BCV0030)<br>
+                            &bull; V.Madhusudhan Karthik (26BEC0047)<br>
+                            &bull; S.V.Pravesh (26BYB0041)<br>
+                            &bull; P.Adhiskhith (26BCE0744)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- 2. Problem Statement -->
+        <section id="problem-statement">
+            <h2>2. Problem Statement</h2>
+            <p><strong>Defining the Problem:</strong> Build a secure and transparent digital platform for land record management and citizen grievance redressal. While India has successfully digitized ~95% of textual land records under the DILRMP, spatial cadastral maps remain severely fragmented. Merely vectorizing historical paper maps freezes century-old colonial measurement errors with high-precision digital coordinates.</p>
+            <p><strong>Why it is important:</strong> This "Digitization Paradox" causes widespread F-Line boundary disputes, paralyzes the revenue department, and overwhelms the judicial system with land title conflicts.</p>
+            <div class="interactive-card">
+                <h4>Supporting Statistics</h4>
+                <ul>
+                    <li>Over 66% of all civil cases in India are land and property disputes.</li>
+                    <li>Millions of ULPINs (Unique Land Parcel Identification Numbers) have conflicting spatial boundary overlaps.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. Proposed Solution -->
+        <section id="proposed-solution">
+            <h2>3. Proposed Solution</h2>
+            <p><strong>Plot-Armor</strong> replaces traditional "presumptive title" CRUD databases with a rigorous mathematical <strong>7-Phase Trust Pipeline</strong>.</p>
+            <p>It ensures that uncertain heterogeneous field evidence transitions into a verified, immutable legal state through deterministic spatial geometry checks, temporal custody graph AI, and transparent judicial holds.</p>
+            
+            <div class="interactive-card">
+                <h4>What makes it innovative?</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>ISO 19152-1 LADM Schema:</strong> Adheres to international spatial land administration standards.</li>
+                    <li><strong>Hardware TEE Inspiration:</strong> Employs software-defined Trusted Execution Environment (TEE) principles: Execution Integrity, Confidentiality, and Isolation.</li>
+                    <li><strong>Zero PII on DLT:</strong> Only cryptographically hashed identifiers traverse external layers, fully compliant with the DPDP Act 2023.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 4. Technical Approach -->
+        <section id="technical-approach">
+            <h2>4. Technical Approach</h2>
+            <p><strong>Tech Stack:</strong> Node.js, Express.js, SQLite3 (PostGIS-ready), Turf.js Spatial Engine, Native ES6+ Zero-Build Edge Shell, Blockchain anchoring.</p>
+            
+            <div class="mermaid">
+            graph TD
+                A[GNSS Field Verification] --> B(Spatial Engine: Turf.js)
+                C[Historical Records] --> D(Temporal Custody Graph AI)
+                B --> E{Dispute Evidence & Routing Engine}
+                D --> E
+                E -->|Clear| F[Tahsildar Revenue Desk]
+                E -->|Disputed| G[Tribunal Docket / Judicial Hold]
+                F --> H[(Consortium DLT Ledger)]
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item"><strong>Spatial Data Integrity (SDI) Engine:</strong> Computes Jaccard Indices and Hausdorff Distances.</div>
+                <div class="timeline-item"><strong>Dispute Evidence Routing (DERE):</strong> Deterministic routing based on risk scoring.</div>
+                <div class="timeline-item"><strong>Consortium Anchoring:</strong> Generates irreversible SHA-256 digests.</div>
+            </div>
+        </section>
+
+        <!-- 5. Demo / Prototype -->
+        <section id="demo-prototype">
+            <h2>5. Demo / Prototype</h2>
+            <p>Our Unified 4-Persona Workspace provides an accessible, ultra-lightweight interface for all stakeholders directly from the browser (Zero-Build Edge Frontend).</p>
+            
             <div class="card-grid">
                 <div class="interactive-card">
-                    <h4>Decentralized Trust</h4>
-                    <p>Eliminating single points of failure in land registry through verifiable credentials and transparent logging.</p>
+                    <h4>1. Record Assessment</h4>
+                    <p>Ingests ULPINs; builds visual evidence graphs & exports audit PDF reports.</p>
                 </div>
                 <div class="interactive-card">
-                    <h4>Spatial Integrity</h4>
-                    <p>Ensuring absolute geometric consensus. A plot cannot exist in two places, nor overlap without triggering the DERE matrix.</p>
+                    <h4>2. Field Verification</h4>
+                    <p>Cryptographic device signing & live spatial SVG overlay of GNSS captures.</p>
                 </div>
                 <div class="interactive-card">
-                    <h4>Immutable Anchoring</h4>
-                    <p>Finalizing verified land boundaries using an append-only state, aligned with ISO 19152-1 LADM standards.</p>
+                    <h4>3. Revenue Desk</h4>
+                    <p>Real-time searchable queue for Tahsildars to certify clear parcels or escalate disputes.</p>
+                </div>
+                <div class="interactive-card">
+                    <h4>4. Tribunal Docket</h4>
+                    <p>Judicial hold dashboard; locks disputed titles and dispatches legal summonses.</p>
+                </div>
+            </div>
+            <p><em>(Live deployment of our architecture handles all 4 flows flawlessly!)</em></p>
+        </section>
+
+        <!-- 6. Impact & Use Cases -->
+        <section id="impact-usecases">
+            <h2>6. Impact & Use Cases</h2>
+            <div class="card-grid">
+                <div class="interactive-card">
+                    <h4>Beneficiaries</h4>
+                    <ul>
+                        <li><strong>Citizens/Landowners:</strong> Faster, transparent dispute resolution without endless court battles.</li>
+                        <li><strong>Revenue Officers (Tahsildars):</strong> Automated decision-support and cryptographic non-repudiation.</li>
+                        <li><strong>Civil Courts:</strong> Reduced backlog by filtering cases through the algorithmic DERE engine.</li>
+                    </ul>
+                </div>
+                <div class="interactive-card">
+                    <h4>Real-World Application & Scaling</h4>
+                    <ul>
+                        <li>Direct integration with State Revenue Departments (e.g., Dharani, Bhoomi, PM-Kisan).</li>
+                        <li>Highly scalable microservices architecture ready to deploy on Kubernetes/Docker Swarm.</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <section id="architecture" class="fade-in">
-            <h2>2. System Architecture</h2>
-            <p>The system leverages a decoupled, stateless backend communicating with a highly responsive, zero-build frontend.</p>
-            <div class="mermaid">
-                graph TD
-                    A[Client: Vanilla JS / HTML] -->|REST API| B(Node.js Express Backend)
-                    B --> C{Engines}
-                    C -->|Turf.js| D[Spatial Engine]
-                    C --> E[DERE Engine]
-                    C --> F[Graph Engine]
-                    B --> G[(LADM SQLite Database)]
-                    style A fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#fff
-                    style B fill:#1e293b,stroke:#14b8a6,stroke-width:2px,color:#fff
-                    style G fill:#f59e0b,stroke:#fff,stroke-width:2px,color:#fff
-            </div>
-        </section>
-
-        <section id="workflow" class="fade-in">
-            <h2>3. Procedural Workflow</h2>
-            <p>The 7-Phase Trust Pipeline establishes a strict state machine for land verification:</p>
+        <!-- 7. Challenges Faced -->
+        <section id="challenges-faced">
+            <h2>7. Challenges Faced & How We Overcame Them</h2>
             <div class="timeline">
-                <div class="timeline-item"><strong>1. Observe:</strong> Ingest cadastral and GNSS data boundaries.</div>
-                <div class="timeline-item"><strong>2. Validate:</strong> Check topological constraints and schema limits.</div>
-                <div class="timeline-item"><strong>3. Compare:</strong> Execute spatial diffing (IoU, Hausdorff).</div>
-                <div class="timeline-item"><strong>4. Classify:</strong> Assign DERE risk vectors based on threshold breaches.</div>
-                <div class="timeline-item"><strong>5. Review:</strong> Persona-based human-in-the-loop validation via UI.</div>
-                <div class="timeline-item"><strong>6. Decide:</strong> Tribunal/Revenue officer consensus application.</div>
-                <div class="timeline-item"><strong>7. Anchor:</strong> Commit to LADM compliant ledger.</div>
-            </div>
-        </section>
-
-        <section id="tee" class="fade-in">
-            <h2>4. TEE Principles Implemented</h2>
-            <p>Trusted Execution Environment (TEE) philosophies are applied at the software level to guarantee computational integrity:</p>
-            <ul>
-                <li><strong>Isolated Computation:</strong> Spatial engines run in sandboxed Node instances, ensuring boundary calculations cannot be tampered with by external intercepts.</li>
-                <li><strong>Deterministic Outcomes:</strong> Given the same GeoJSON inputs, the Spatial Engine will always produce the exact same IoU and Risk Score algorithms.</li>
-                <li><strong>Audit Trails:</strong> Every state transition in the 7-phase pipeline logs a cryptographic trace of the payload.</li>
-            </ul>
-        </section>
-
-        <section id="webdev" class="fade-in">
-            <h2>5. Web Development Principles</h2>
-            <div class="interactive-card">
-                <h4>Zero-Build Philosophy</h4>
-                <p>The frontend completely eschews complex bundlers (Webpack, Vite) in favor of native ES modules and vanilla DOM APIs. This guarantees maximum longevity, blistering fast load times, and zero dependency rot over the lifespan of municipal adoption.</p>
-            </div>
-            <div class="interactive-card">
-                <h4>Persona-Driven UI</h4>
-                <p>The UI dynamically morphs based on the active persona (Revenue Officer, Tribunal, Surveyor), enabling targeted features like Legal Summons Generation and GNSS selections without loading entirely separate dashboard applications.</p>
-            </div>
-        </section>
-
-        <section id="math" class="fade-in">
-            <h2>6. Mathematics Behind the Engines</h2>
-            <p>Plot Armor utilizes strict geometric mathematics to resolve boundary disputes dynamically.</p>
-            
-            <div class="math-card">
-                <h3>Intersection over Union (IoU)</h3>
-                <p>Calculates the exact overlap fraction between the claimed boundary and the anchored boundary.</p>
-                <div class="math-equation">
-                    $$ \\text{IoU} = \\frac{\\text{Area}(A \\cap B)}{\\text{Area}(A \\cup B)} $$
+                <div class="timeline-item">
+                    <strong>Challenge:</strong> Processing historical unstructured spatial errors and overlapping polygons from legacy records.
+                    <br><strong>Solution:</strong> Implemented mathematical geometric verification (Turf.js) utilizing Jaccard Indices (IoU) and Hausdorff limits to flag anomalies deterministically.
                 </div>
-            </div>
-
-            <div class="math-card">
-                <h3>Risk Score Calculation</h3>
-                <p>The risk of a dispute is inversely proportional to the IoU.</p>
-                <div class="math-equation">
-                    $$ \\text{Risk Score} = (1 - \\text{IoU}) \\times 100 $$
+                <div class="timeline-item">
+                    <strong>Challenge:</strong> Ensuring DPDP 2023 Compliance while utilizing distributed ledgers.
+                    <br><strong>Solution:</strong> Architected a privacy-preserving hashing mechanism where no PII or raw coordinates are ever placed on-chain.
                 </div>
-            </div>
-
-            <div class="math-card">
-                <h3>Centroid Shift Vector</h3>
-                <p>Measures the Euclidean distance between the geographic centers of two plots to detect boundary drifts.</p>
-                <div class="math-equation">
-                    $$ \\Delta C = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} $$
+                <div class="timeline-item">
+                    <strong>Challenge:</strong> Multi-stakeholder UI complexity.
+                    <br><strong>Solution:</strong> Built a unified, 4-persona role-based access control (RBAC) portal using a lightweight Vanilla JS edge shell.
                 </div>
             </div>
         </section>
 
-        <section id="codebase" class="fade-in">
-            <h2>7. Codebase Inventory</h2>
+        <!-- 8. Future Scope -->
+        <section id="future-scope">
+            <h2>8. Future Scope</h2>
+            <p>Our long-term vision is to harden this MVP into a production-grade National Land Architecture.</p>
             <table class="code-table">
-                <thead>
-                    <tr>
-                        <th>File / Directory</th>
-                        <th>Purpose & Phase Support</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>backend/src/engines/spatialEngine.js</code></td>
-                        <td>Calculates IoU, Hausdorff distance, and polygon intersections. (Phase 3: Compare)</td>
-                    </tr>
-                    <tr>
-                        <td><code>backend/src/engines/dereEngine.js</code></td>
-                        <td>Classifies disputes into the DERE matrix based on spatial outputs. (Phase 4: Classify)</td>
-                    </tr>
-                    <tr>
-                        <td><code>backend/src/db/database.js</code></td>
-                        <td>Maintains the ISO 19152-1 LADM SQLite schema and synthetic ULPINs. (Phase 7: Anchor)</td>
-                    </tr>
-                    <tr>
-                        <td><code>clients/unified-portal/app.js</code></td>
-                        <td>Handles SVG rendering, persona switching, and PDF generation. (Phase 5: Review)</td>
-                    </tr>
-                </tbody>
+                <tr>
+                    <th>Component</th>
+                    <th>Future Upgrade</th>
+                </tr>
+                <tr>
+                    <td><strong>Spatial Engine</strong></td>
+                    <td>Migration to PostgreSQL 16 + PostGIS cluster for nationwide scale.</td>
+                </tr>
+                <tr>
+                    <td><strong>Silicon Security</strong></td>
+                    <td>FIDO2 / WebAuthn standard utilizing Android StrongBox for surveyor GNSS devices.</td>
+                </tr>
+                <tr>
+                    <td><strong>Distributed Ledger</strong></td>
+                    <td>Hyperledger Fabric 2.5 channel with RAFT consensus across municipal nodes.</td>
+                </tr>
+                <tr>
+                    <td><strong>Document Ingestion</strong></td>
+                    <td>Indic OCR + fine-tuned NER models for automated vernacular deed extraction.</td>
+                </tr>
             </table>
         </section>
 
-        <section id="scalability" class="fade-in">
-            <h2>8. Scalability Roadmap</h2>
-            <p>To scale from regional pilot to a national infrastructure, the following architectural upgrades are mapped out:</p>
-            <div class="timeline">
-                <div class="timeline-item"><strong>Database Migration:</strong> Transition from SQLite to PostgreSQL with PostGIS extensions for native spatial indexing (R-Trees) and concurrent high-volume reads.</div>
-                <div class="timeline-item"><strong>Compute Offloading:</strong> Rewrite the Spatial Engine in Rust via WebAssembly (Wasm) to handle millions of overlapping polygons per second seamlessly.</div>
-                <div class="timeline-item"><strong>Distributed Consensus:</strong> Implement a Hyperledger Fabric layer for the "Anchor" phase to ensure state-level immutability across disparate municipal nodes.</div>
+        <!-- 9. Conclusion -->
+        <section id="conclusion">
+            <h2>9. Conclusion</h2>
+            <div class="interactive-card">
+                <h4>Summary</h4>
+                <ul style="margin-left: 1.5rem; font-size: 1.1rem; line-height: 1.8;">
+                    <li><strong>Mathematical Certainty:</strong> Eliminates arbitrary manual errors through algorithmic geometry and graph AI.</li>
+                    <li><strong>Institutional Accountability:</strong> Immutable cryptographic receipts prevent state rollbacks or malicious alterations.</li>
+                    <li><strong>Standout Factor:</strong> Moves India’s land administration away from "presumptive title" databases to a verifiable, DPDP-compliant Trust Pipeline.</li>
+                </ul>
             </div>
         </section>
+
+        <!-- 10. Acknowledgements -->
+        <section id="acknowledgements">
+            <h2>10. Acknowledgements</h2>
+            <p>We would like to extend our deepest gratitude to:</p>
+            <ul>
+                <li>The mentors and organizers of <strong>INNOHACK 2.0</strong> for providing an incredible platform to innovate.</li>
+                <li>The open-source communities (Node.js, Turf.js) that empowered our spatial engines.</li>
+                <li>The respective institutions paving the way for Digital India, serving as our architectural inspiration.</li>
+            </ul>
+            <div style="text-align: center; margin-top: 3rem; opacity: 0.7;">
+                <p><em>Built with ❤️ by Team Quintex</em></p>
+            </div>
+        </section>
+
     </main>
 
     <!-- External Script Loaders -->
@@ -379,6 +459,6 @@ fs.writeFileSync(path.join(baseDir, 'index.html'), indexHtml);
 fs.writeFileSync(path.join(cssDir, 'style.css'), styleCss);
 fs.writeFileSync(path.join(jsDir, 'main.js'), scriptJs);
 
-console.log('✅ Success! The Plot Armor architectural presentation has been generated.');
-console.log('📂 Location: docs/presentation/index.html');
-console.log('🌐 Open this file in your browser to view the interactive documentation.');
+console.log('✅ Success! The Plot Armor INNOHACK 2.0 presentation has been regenerated.');
+console.log('📍 Location: docs/presentation/index.html');
+console.log('🌐 Open this file in your browser to view the interactive presentation.');
