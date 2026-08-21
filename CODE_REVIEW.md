@@ -103,7 +103,7 @@ The persistent data model in `backend/src/db/database.js` strictly maps to the i
 To secure the nation's critical land infrastructure, Plot-Armor abstracts the physical silicon guarantees of **Trusted Execution Environments (TEE)** into a software-defined architecture:
 1. **Confidentiality (Data in Use):** PII (Names, Aadhaars) is stripped. Only irreversible SHA-256 digests (`geometry_hash`, `evidence_hash`) traverse external layers.
 2. **Execution Integrity:** The Spatial Data Integrity (SDI) and Dispute Engine (DERE) execute deterministically; identical geometries mathematically guarantee identical Risk Scores and routing.
-3. **Authenticity & Attestation:** Field verifications demand hardware-signed GNSS payloads, mapping Surveyor UID, Device IMEI, and GNSS accuracy parameters cryptographically.
+3. **Authenticity & Attestation:** Field verifications demand hardware-signed GNSS payloads, mapping Surveyor UID, Device IMEI, and GNSS accuracy parameters cryptographically. Additionally, the system enforces strict Geographic Security Constraints (Geofencing), ensuring Tahsildars cannot log into or access portals outside their physical jurisdiction.
 4. **Isolation:** The 7-Phase State Machine prevents arbitrary execution paths. A phase transition (e.g., Revenue Desk to Ledger) cannot occur without clearing preceding gating metrics.
 5. **Non-repudiation:** Revenue certifications generate immutable, dual-signature receipts. A Tahsildar cannot retrospectively deny their approval of a disputed boundary once anchored.
 6. **State Continuity (Anti-Rollback):** Strict monotonic version control ($P_v \rightarrow P_{v+1}$) prevents malicious rollback of an ULPIN state to a previously contested boundary.

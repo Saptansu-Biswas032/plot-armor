@@ -1659,6 +1659,28 @@ function bindEvents() {
   };
   loadProfilesDropdown();
 
+  // Load all Tahsildars into dropdown
+  const loadTahsildarsDropdown = async () => {
+    try {
+      const res = await api('/admin/grievances/auth/tahsildars');
+      const select = $('#officer-profile-select');
+      if (!select) return;
+      select.innerHTML = '<option value="">Loading Tahsildars...</option>';
+      setTimeout(() => {
+          select.innerHTML = '<option value="">Select Tahsildar profile...</option>';
+          res.tahsildars.forEach(t => {
+            const option = createElement('option', '', `${t.name} (${t.state} · ${t.district})`);
+            option.value = t.tahsildar_id;
+            option.dataset.state = t.state;
+            select.appendChild(option);
+          });
+      }, 100);
+    } catch (err) {
+      console.error('Failed to load tahsildars:', err);
+    }
+  };
+  loadTahsildarsDropdown();
+
   // Reset Demo DB Logic
   const resetDemoData = async () => {
     try {
@@ -1688,13 +1710,32 @@ function bindEvents() {
   // Officer Login Form
   $('#officer-login-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const id = $('#officer-id-input')?.value;
-    const pin = $('#officer-otp-input')?.value;
-    loginAsOfficer(id, pin);
-  });
+    const regionSelect = $('#officer-region-select');
+    const profileSelect = $('#officer-profile-select');
+    const selectedOption = profileSelect.options[profileSelect.selectedIndex];
 
-  $('#demo-officer-fill')?.addEventListener('click', () => {
-    loginAsOfficer('TAHSILDAR_REV_88', '882190');
+    if (!regionSelect.value || !profileSelect.value) {
+      toast('Please select both your physical region and a Tahsildar profile.', 'error');
+      return;
+    }
+
+    // ENFORCE THE GEOGRAPHIC SECURITY CONSTRAINT
+    if (regionSelect.value !== selectedOption.dataset.state) {
+      toast(`Access Denied! Security Constraint: You are physically located in ${regionSelect.value}, but the chosen Tahsildar is in ${selectedOption.dataset.state}. Cross-region login is blocked.`, 'error');
+      return;
+    }
+
+    const id = profileSelect.value;
+    const pin = $('#officer-otp-input')?.value;
+    
+    // Save to state to simulate active officer profile
+    state.activeOfficer = {
+      id,
+      name: selectedOption.textContent.split('(')[0].trim(),
+      region: selectedOption.dataset.state
+    };
+    
+    loginAsOfficer(id, pin);
   });
 
   // Citizen Grievance Filing

@@ -52,8 +52,10 @@
           <strong id="user-display-name">Citizen</strong>
           <small id="user-display-sub">Aadhaar verified</small>
         </div>
-        <button type="button" class="button button-ghost button-compact" id="switch-portal-btn" title="Switch Portal">🔁 Switch Portal</button>
-        <button type="button" class="button button-ghost button-compact" id="logout-btn" title="Logout" style="margin-left:4px;">Logout 🚪</button>
+        <div style="display:flex; gap: 8px; margin-left: 12px; align-items: center; border-left: 1px solid var(--line); padding-left: 12px;">
+            <button type="button" class="button button-secondary button-compact" id="switch-portal-btn" title="Switch to another portal">🔁 Switch Role</button>
+            <button type="button" class="button button-danger button-compact" id="logout-btn" title="Secure Logout">🔒 Log Out</button>
+        </div>
       </div>
 
       <div class="gateway-status" id="gateway-status" role="status" aria-live="polite"><span class="status-dot"></span><span>Connecting gateway</span></div>
@@ -150,8 +152,27 @@
               
               <form class="auth-form" id="officer-login-form">
                 <div class="form-group">
+                  <label for="officer-region-select">Your Current Region (Geofence Check)</label>
+                  <select id="officer-region-select" required>
+                    <option value="">Select your physical location...</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Gujarat">Gujarat</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="officer-profile-select">Select Tahsildar Profile (Database)</label>
+                  <select id="officer-profile-select" required>
+                    <option value="">Loading Tahsildars...</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="display:none;">
                   <label for="officer-id-input">Revenue Officer UID</label>
-                  <input type="text" id="officer-id-input" placeholder="TAHSILDAR_REV_88" value="TAHSILDAR_REV_88" required autocomplete="off">
+                  <input type="text" id="officer-id-input" placeholder="TAHSILDAR_REV_88" value="" autocomplete="off">
                 </div>
                 <div class="form-group">
                   <label for="officer-otp-input">Security Token PIN / OTP</label>
@@ -159,13 +180,6 @@
                 </div>
                 <button type="submit" class="button button-primary wide" id="officer-login-btn">Enter Administration Portal <span aria-hidden="true">→</span></button>
               </form>
-
-              <div class="quick-demo-box">
-                <span class="quick-demo-label">Quick Demo Access:</span>
-                <div class="quick-chips">
-                  <button type="button" class="demo-chip demo-chip-officer" id="demo-officer-fill">🛡️ Tahsildar (Revenue UID 88 · Full Access)</button>
-                </div>
-              </div>
             </article>
           </div>
         </section>

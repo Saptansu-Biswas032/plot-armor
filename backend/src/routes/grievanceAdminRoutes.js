@@ -6,6 +6,20 @@ const { getDB } = require('../db/database');
 const realtimeEngine = require('../engines/realtimeEngine');
 
 /**
+ * GET /api/v1/admin/grievances/auth/tahsildars
+ * Returns all seeded Tahsildars for the Officer Login portal
+ */
+router.get('/auth/tahsildars', async (req, res) => {
+    try {
+        const db = getDB();
+        const tahsildars = await db.all(`SELECT * FROM tahsildars ORDER BY state ASC, name ASC`);
+        res.json({ tahsildars });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
  * GET /api/v1/admin/grievances
  * Returns all citizen grievances for the Revenue Officer / Adjudication Desk
  */

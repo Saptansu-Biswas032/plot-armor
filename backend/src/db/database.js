@@ -93,6 +93,13 @@ async function initDB() {
             updated_at TEXT NOT NULL
         );
 
+        CREATE TABLE IF NOT EXISTS tahsildars (
+            tahsildar_id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            state TEXT NOT NULL,
+            district TEXT NOT NULL
+        );
+
         CREATE TABLE IF NOT EXISTS citizens (
             aadhaar TEXT PRIMARY KEY,
             name TEXT NOT NULL,
@@ -151,8 +158,29 @@ async function seedCitizensAndGrievances(db) {
             );
         }
     }
+
+    const tahsildars = [
+        { id: "REV_AP_01", name: "Ramesh Naidu", state: "Andhra Pradesh", district: "Visakhapatnam" },
+        { id: "REV_AP_02", name: "Sita Kumari", state: "Andhra Pradesh", district: "Guntur" },
+        { id: "REV_MH_01", name: "Vikram Patil", state: "Maharashtra", district: "Pune" },
+        { id: "REV_MH_02", name: "Priya Deshmukh", state: "Maharashtra", district: "Mumbai" },
+        { id: "REV_KA_01", name: "Suresh Gowda", state: "Karnataka", district: "Bangalore" },
+        { id: "REV_KA_02", name: "Kavitha Shetty", state: "Karnataka", district: "Mysore" },
+        { id: "REV_UP_01", name: "Anand Yadav", state: "Uttar Pradesh", district: "Lucknow" },
+        { id: "REV_UP_02", name: "Pooja Singh", state: "Uttar Pradesh", district: "Kanpur" },
+        { id: "REV_GJ_01", name: "Amit Patel", state: "Gujarat", district: "Ahmedabad" },
+        { id: "REV_GJ_02", name: "Neha Shah", state: "Gujarat", district: "Surat" }
+    ];
+
+    for (const t of tahsildars) {
+        await db.run(
+            `INSERT OR IGNORE INTO tahsildars (tahsildar_id, name, state, district) VALUES (?, ?, ?, ?)`,
+            [t.id, t.name, t.state, t.district]
+        );
+    }
+
     // Note: No initial grievances seeded, to start with a blank desk as requested.
-    console.log(`[SYS] ✅ Successfully seeded ${SEED_CITIZENS.length} citizens. Desk is clear.`);
+    console.log(`[SYS] ✅ Successfully seeded ${SEED_CITIZENS.length} citizens and ${tahsildars.length} Tahsildars. Desk is clear.`);
 }
 
 function getDB() {
