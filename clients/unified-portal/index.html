@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Plot-Armor land record verification portal">
-  <title>Plot-Armor | Land intelligence</title>
+  <meta name="description" content="Plot-Armor Land Intelligence & Grievance Redressal Portal">
+  <title>Plot-Armor | Land Intelligence & Grievance Redressal</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7.4.0/turf.min.js"></script>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
@@ -12,25 +15,53 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="app-shell">
     <header class="topbar">
-      <a class="brand" href="#overview" data-navigate="overview" aria-label="Plot-Armor home">
+      <a class="brand" href="#gateway" data-navigate="gateway" aria-label="Plot-Armor home">
         <span class="brand-mark" aria-hidden="true"><span></span></span>
         <span>
           <strong>Plot-Armor</strong>
-          <small>Land intelligence system</small>
+          <small>Land intelligence &amp; trust</small>
         </span>
       </a>
-      <nav class="main-nav" aria-label="Portal sections">
-        <button class="nav-link active" type="button" data-navigate="overview">Overview</button>
-        <button class="nav-link" type="button" data-navigate="registry">Record assessment</button>
-        <button class="nav-link" type="button" data-navigate="field">Field verification</button>
-        <button class="nav-link" type="button" data-navigate="revenue">Revenue desk</button>
-        <button class="nav-link" type="button" data-navigate="tribunal">Tribunal</button>
+      
+      <!-- Dynamic Nav Links (Hidden during Login / Gateway mode) -->
+      <nav class="main-nav" id="main-nav" aria-label="Portal sections" style="display:none;">
+        <!-- Officer Navigation (Shown when Officer is logged in) -->
+        <div id="nav-officer-links" style="display:none; gap:2px;">
+          <button class="nav-link" type="button" id="reset-demo-btn" style="color:#d4a550; font-weight:800;">⛑️ Reset Demo Data</button>
+          <span style="color:var(--muted); font-size:16px;">|</span>
+          <button class="nav-link" type="button" data-navigate="overview">Overview</button>
+          <button class="nav-link" type="button" data-navigate="registry">Record assessment</button>
+          <button class="nav-link" type="button" data-navigate="field">Field verification</button>
+          <button class="nav-link" type="button" data-navigate="revenue">Revenue desk</button>
+          <button class="nav-link" type="button" data-navigate="grievances">Grievances <span class="nav-count-badge" id="nav-grievance-count">2</span></button>
+          <button class="nav-link" type="button" data-navigate="tribunal">Tribunal</button>
+        </div>
+
+        <!-- Citizen Navigation (Shown when Citizen is logged in) -->
+        <div id="nav-citizen-links" style="display:none; gap:2px;">
+          <button class="nav-link active" type="button" data-navigate="citizen-holdings">🌾 My Land Holdings</button>
+          <button class="nav-link" type="button" data-navigate="citizen-file">🚨 File Grievance</button>
+          <button class="nav-link" type="button" data-navigate="citizen-tracker">📊 Live Grievance Tracker</button>
+        </div>
       </nav>
+
+      <!-- User Role Pill & Portal Switcher (Hidden during Login / Gateway mode) -->
+      <div class="user-pill" id="user-pill" style="display:none;">
+        <span class="user-avatar" id="user-avatar">👤</span>
+        <div class="user-meta">
+          <strong id="user-display-name">Citizen</strong>
+          <small id="user-display-sub">Aadhaar verified</small>
+        </div>
+        <button type="button" class="button button-ghost button-compact" id="switch-portal-btn" title="Switch Portal">🔁 Switch Portal</button>
+        <button type="button" class="button button-ghost button-compact" id="logout-btn" title="Logout" style="margin-left:4px;">Logout 🚪</button>
+      </div>
+
       <div class="gateway-status" id="gateway-status" role="status" aria-live="polite"><span class="status-dot"></span><span>Connecting gateway</span></div>
     </header>
 
-    <div class="portal-layout">
-      <aside class="sidebar" aria-label="Case workflow">
+    <div class="portal-layout gateway-mode" id="portal-layout">
+      <!-- Officer Sidebar (Visible only in Officer Mode) -->
+      <aside class="sidebar" id="officer-sidebar" aria-label="Case workflow" style="display:none;">
         <section class="selection-card" aria-labelledby="selection-title">
           <p class="eyebrow">Active land unit</p>
           <h2 id="selection-title" class="ulpin" data-current="ulpin">Loading registry…</h2>
@@ -54,7 +85,184 @@
       </aside>
 
       <main id="main-content" class="main-content" tabindex="-1">
-        <section class="view active" id="view-overview" aria-labelledby="overview-title">
+        
+        <!-- ==========================================
+             🌐 VIEW 0: UNIFIED AUTHENTICATION GATEWAY
+             ========================================== -->
+        <section class="view active" id="view-gateway" aria-labelledby="gateway-heading">
+          <div class="gateway-hero">
+            <p class="eyebrow light">Digital Public Infrastructure · Land Governance</p>
+            <h1 id="gateway-heading">Unified Land Trust Gateway</h1>
+            <p>Access the Indian land administration network via Aadhaar-authenticated Citizen Services or Authorized Revenue Administration.</p>
+            <div style="margin-top:20px;">
+              <button class="button button-ghost" id="gateway-reset-demo-btn" style="color:#d4a550; border-color:rgba(212,165,80,0.5);">⛑️ Purge & Reset Demo Database</button>
+            </div>
+          </div>
+
+          <div class="gateway-grid">
+            <!-- Citizen Portal Card -->
+            <article class="panel auth-card citizen-auth-card">
+              <div class="auth-card-header">
+                <span class="auth-icon">👤</span>
+                <div>
+                  <p class="eyebrow">Citizen &amp; Landowner</p>
+                  <h2>Bhoomi Citizen Portal</h2>
+                </div>
+              </div>
+              <p class="auth-desc">View your registered land parcels, inspect digital RoR / Pattadar passbooks on satellite maps, and file real-time grievances.</p>
+              
+              <form class="auth-form" id="citizen-login-form">
+                <div class="form-group">
+                  <label for="citizen-aadhaar-input">Aadhaar Number (12 Digits)</label>
+                  <input type="text" id="citizen-aadhaar-input" placeholder="9182 4721 4210" maxlength="14" value="9182 4721 4210" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="citizen-otp-input">6-Digit Mobile OTP</label>
+                  <div style="display:flex; gap:8px;">
+                    <input type="text" id="citizen-otp-input" placeholder="482910" maxlength="6" value="482910" required autocomplete="off">
+                    <button type="button" class="button button-secondary" id="citizen-get-otp-btn" style="white-space:nowrap;">Get OTP</button>
+                  </div>
+                </div>
+                <button type="submit" class="button button-primary wide" id="citizen-login-btn">Enter Bhoomi Citizen Portal <span aria-hidden="true">→</span></button>
+              </form>
+
+              <div class="quick-demo-box">
+                <label for="demo-profile-select" class="quick-demo-label">Load Profile from Database:</label>
+                <div style="display:flex; gap:8px; margin-top:4px;">
+                  <select id="demo-profile-select" style="flex:1;">
+                    <option value="">Loading profiles...</option>
+                  </select>
+                  <button type="button" class="button button-secondary" id="load-demo-profile-btn">Auto-Fill</button>
+                </div>
+              </div>
+            </article>
+
+            <!-- Revenue Officer Card -->
+            <article class="panel auth-card officer-auth-card">
+              <div class="auth-card-header">
+                <span class="auth-icon">🛡️</span>
+                <div>
+                  <p class="eyebrow">Government Authority</p>
+                  <h2>Revenue Officer &amp; SDI Portal</h2>
+                </div>
+              </div>
+              <p class="auth-desc">Audit ISO 19152-1 temporal custody graphs, execute GNSS field rover verification, and adjudicate land disputes on the blockchain.</p>
+              
+              <form class="auth-form" id="officer-login-form">
+                <div class="form-group">
+                  <label for="officer-id-input">Revenue Officer UID</label>
+                  <input type="text" id="officer-id-input" placeholder="TAHSILDAR_REV_88" value="TAHSILDAR_REV_88" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="officer-otp-input">Security Token PIN / OTP</label>
+                  <input type="password" id="officer-otp-input" placeholder="••••••" value="882190" required autocomplete="off">
+                </div>
+                <button type="submit" class="button button-primary wide" id="officer-login-btn">Enter Administration Portal <span aria-hidden="true">→</span></button>
+              </form>
+
+              <div class="quick-demo-box">
+                <span class="quick-demo-label">Quick Demo Access:</span>
+                <div class="quick-chips">
+                  <button type="button" class="demo-chip demo-chip-officer" id="demo-officer-fill">🛡️ Tahsildar (Revenue UID 88 · Full Access)</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             👤 VIEW: CITIZEN BHOOMI PORTAL
+             ========================================== -->
+        <section class="view" id="view-citizen" aria-labelledby="citizen-title">
+          <!-- Citizen Profile Banner -->
+          <div class="citizen-profile-banner">
+            <div class="citizen-info">
+              <div class="citizen-avatar">👤</div>
+              <div>
+                <h1 id="citizen-title">Welcome, <span id="citizen-name-disp">Citizen</span></h1>
+                <p id="citizen-details-disp">Aadhaar: •••• •••• 4210 · Village: Gollapudi · Krishna District, Andhra Pradesh</p>
+              </div>
+            </div>
+            <div class="citizen-katha-badge">
+              <span>Khata Number</span>
+              <strong id="citizen-khata-disp">KT-AP-4019</strong>
+            </div>
+          </div>
+
+          <!-- Citizen Sub-navigation -->
+          <div class="citizen-subnav">
+            <button type="button" class="citizen-tab active" data-citizen-tab="holdings">🌾 My Land Holdings (<span id="citizen-holdings-count">2</span>)</button>
+            <button type="button" class="citizen-tab" data-citizen-tab="file">🚨 File Land Grievance</button>
+            <button type="button" class="citizen-tab" data-citizen-tab="tracker">📊 Live Grievance Tracker (<span id="citizen-grievances-count">1</span>)</button>
+          </div>
+
+          <!-- Sub-Tab 1: Land Holdings Grid -->
+          <div class="citizen-tab-content active" id="citizen-tab-holdings">
+            <div class="holdings-grid" id="holdings-grid">
+              <p>Loading registered land holdings…</p>
+            </div>
+          </div>
+
+          <!-- Sub-Tab 2: Book Land Grievance -->
+          <div class="citizen-tab-content" id="citizen-tab-file">
+            <div class="panel grievance-form-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Public Grievance Redressal</p>
+                  <h2>Book an Authoritative Land Grievance</h2>
+                </div>
+                <span class="state-badge verified">Instant SDI Routing</span>
+              </div>
+              <p>Your grievance is cryptographically signed and pushed in real time to the Revenue Officer's adjudication desk.</p>
+
+              <form class="grievance-form" id="file-grievance-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="grievance-ulpin-select">Select Land Parcel (ULPIN)</label>
+                    <select id="grievance-ulpin-select" required></select>
+                  </div>
+                  <div class="form-group">
+                    <label for="grievance-category-select">Grievance Category</label>
+                    <select id="grievance-category-select" required>
+                      <option value="BOUNDARY_ENCROACHMENT">🚨 Illegal Boundary Encroachment / Fence Shift</option>
+                      <option value="UNAUTHORIZED_MUTATION">⚠️ Unauthorized Sub-division / Mutation</option>
+                      <option value="RECORD_MISMATCH">📝 Name / Share Ratio Mismatch in RoR</option>
+                      <option value="FRAUDULENT_DEED">⚖️ Fraudulent Conveyance / Double Selling</option>
+                      <option value="SUCCESSION_DISPUTE">🔨 Succession &amp; Inheritance Dispute</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="grievance-title-input">Complaint Title</label>
+                  <input type="text" id="grievance-title-input" placeholder="e.g. Neighboring construction shifted boundary fence by 12 meters" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="grievance-desc-input">Detailed Description &amp; Ground Evidence</label>
+                  <textarea id="grievance-desc-input" rows="4" placeholder="Describe the discrepancy, specific survey marks affected, and relevant dates..." required></textarea>
+                </div>
+
+                <div class="form-actions" style="margin-top:20px; display:flex; gap:12px;">
+                  <button type="submit" class="button button-primary" id="submit-grievance-btn">Submit Grievance with Aadhaar e-Sign <span aria-hidden="true">→</span></button>
+                  <button type="button" class="button button-secondary" id="reset-grievance-btn">Clear Form</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Sub-Tab 3: Live Grievance Tracker -->
+          <div class="citizen-tab-content" id="citizen-tab-tracker">
+            <div class="grievance-tracker-list" id="citizen-tracker-list">
+              <p>No active grievances on record.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             🛡️ VIEW 1: OVERVIEW (OFFICER PORTAL)
+             ========================================== -->
+        <section class="view" id="view-overview" aria-labelledby="overview-title">
           <div class="hero-panel">
             <div class="hero-copy">
               <p class="eyebrow light">ISO 19152-aligned land administration</p>
@@ -71,9 +279,9 @@
             </div>
           </div>
           <div class="metrics-grid" aria-label="Registry totals">
-            <article class="metric-card"><span>Registered parcels</span><strong id="metric-parcels">—</strong><small>Across five synthetic state registries</small></article>
+            <article class="metric-card"><span>Registered parcels</span><strong id="metric-parcels">—</strong><small>Across multi-state synthetic registries</small></article>
             <article class="metric-card"><span>Open revenue queue</span><strong id="metric-pending">—</strong><small>Spatial observations requiring review</small></article>
-            <article class="metric-card"><span>Judicial holds</span><strong id="metric-dockets">—</strong><small>Title actions currently frozen</small></article>
+            <article class="metric-card"><span>Citizen grievances</span><strong id="metric-grievances">2</strong><small>Live incoming complaints</small></article>
             <article class="metric-card accent"><span>Gateway health</span><strong id="metric-health">Checking</strong><small id="metric-architecture">API service availability</small></article>
           </div>
           <section class="process-section" aria-labelledby="process-title">
@@ -87,6 +295,9 @@
           </section>
         </section>
 
+        <!-- ==========================================
+             🛡️ VIEW 2: RECORD ASSESSMENT (OFFICER)
+             ========================================== -->
         <section class="view" id="view-registry" aria-labelledby="registry-title">
           <div class="view-heading">
             <div><p class="eyebrow">Track A · Temporal custody graph</p><h1 id="registry-title">Record assessment</h1><p>Review the source chain before any field deployment.</p></div>
@@ -98,16 +309,13 @@
               <p id="assessment-summary">The graph engine checks whether the authoritative sources describe a coherent parcel history.</p>
               <dl class="assessment-facts"><div><dt>Confidence</dt><dd id="assessment-confidence">—</dd></div><div><dt>Responsible authority</dt><dd id="assessment-authority">—</dd></div><div><dt>Recommended action</dt><dd id="assessment-action">—</dd></div></dl>
               <div style="display:flex; gap:10px; margin-top:20px;">
-                <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="button button-primary wide" id="assess-button" type="button">Run evidence assessment <span aria-hidden="true">→</span></button>
-                <button class="button button-secondary" id="export-assessment-button" type="button" disabled title="Export Report">Export PDF</button>
-              </div>
                 <button class="button button-secondary" id="export-assessment-button" type="button" disabled title="Export Report">Export PDF</button>
               </div>
             </article>
             <article class="panel official-extent">
-              <div class="panel-heading"><div><p class="eyebrow">Cadastral reference</p><h2>Official recorded extent</h2></div><span class="map-key"><i></i> Registry polygon</span></div>
-              <div class="parcel-map map-large"><svg viewBox="0 0 520 300" role="img" aria-labelledby="registry-map-title registry-map-description"><title id="registry-map-title">Official parcel geometry</title><desc id="registry-map-description">A grid containing the selected official cadastral boundary.</desc><defs><pattern id="registry-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" class="map-grid-line"></path></pattern></defs><rect width="520" height="300" class="map-background"></rect><rect width="520" height="300" fill="url(#registry-grid)"></rect><path class="map-road" d="M-10 235 C130 205 290 260 540 220"></path><rect id="registry-geometry" class="official-boundary" x="151" y="66" width="210" height="152" rx="3"></rect><text id="registry-map-label" class="map-label" x="256" y="143" text-anchor="middle">ULPIN</text><text class="map-sub-label" x="256" y="164" text-anchor="middle">official record</text></svg></div>
+              <div class="panel-heading"><div><p class="eyebrow">Cadastral satellite reference</p><h2>Official recorded extent</h2></div><span class="map-key"><i></i> Registry polygon</span></div>
+              <div class="parcel-map map-large"><div id="registry-map" class="interactive-map"></div></div>
               <p class="map-caption" id="registry-coordinates">Coordinates will appear after registry load.</p>
             </article>
           </div>
@@ -117,33 +325,178 @@
           </div>
         </section>
 
+        <!-- ==========================================
+             🛡️ VIEW 3: FIELD VERIFICATION (OFFICER)
+             ========================================== -->
         <section class="view" id="view-field" aria-labelledby="field-title">
-          <div class="view-heading"><div><p class="eyebrow">Track B · Spatial data integrity</p><h1 id="field-title">Field verification</h1><p>Prepare a signed observation and compare it with the official polygon.</p></div><div class="field-context"><span>Active record</span><strong data-current="ulpin">—</strong></div></div>
+          <div class="view-heading">
+            <div><p class="eyebrow">Track B · Spatial data integrity</p><h1 id="field-title">Field verification</h1><p>Capture real-world field boundaries with flexible shape modeling, 2D centroid translation, and vertex dragging.</p></div>
+            <div class="field-context"><span>Active record</span><strong data-current="ulpin">—</strong></div>
+          </div>
           <div class="field-layout">
             <article class="panel field-map-panel">
-              <div class="panel-heading"><div><p class="eyebrow">GNSS observation workspace</p><h2>Boundary comparison</h2></div><span id="field-capture-state" class="state-badge neutral">Not captured</span></div>
-              <div class="parcel-map field-map"><svg viewBox="0 0 680 390" role="img" aria-labelledby="field-map-title field-map-description"><title id="field-map-title">Field boundary comparison</title><desc id="field-map-description">The red dashed outline is the official record. The blue outline is the field observation and shifts as the boundary displacement control changes.</desc><defs><pattern id="field-grid" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M 34 0 L 0 0 0 34" class="map-grid-line"></path></pattern></defs><rect width="680" height="390" class="map-background"></rect><rect width="680" height="390" fill="url(#field-grid)"></rect><path class="map-road" d="M-20 302 C180 250 340 345 700 278"></path><path class="map-stream" d="M70 20 C150 110 105 184 179 374"></path><rect class="legacy-boundary" x="222" y="95" width="238" height="180" rx="3"></rect><rect id="observed-geometry" class="observed-boundary" x="222" y="95" width="238" height="180" rx="3"></rect><text class="map-label field-label" x="341" y="172" text-anchor="middle">FIELD CHECK</text><text id="field-map-label" class="map-sub-label" x="341" y="195" text-anchor="middle">0 m displacement</text><g class="map-legend"><rect x="22" y="330" width="15" height="10" class="legend-legacy"></rect><text x="47" y="340">official record</text><rect x="156" y="330" width="15" height="10" class="legend-observed"></rect><text x="181" y="340">field observation</text></g></svg></div>
-              <div class="capture-control"><div><label for="boundary-shift">Measured boundary displacement</label><p>Use the control to model the captured GNSS offset for this demo.</p></div><output id="shift-output" for="boundary-shift">0 m</output></div><input id="boundary-shift" type="range" min="0" max="180" value="0" step="5">
+              <div class="panel-heading" style="flex-wrap:wrap; gap:12px;">
+                <div><p class="eyebrow">GNSS observation workspace</p><h2>Boundary comparison &amp; ground-truthing</h2></div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span id="field-capture-state" class="state-badge neutral">Not captured</span>
+                </div>
+              </div>
+
+              <!-- Survey Shape Toolbar -->
+              <div class="survey-tools-container">
+                <div class="tool-section">
+                  <span class="tool-label">Surveyed Shape:</span>
+                  <div class="shape-buttons" id="shape-selector">
+                    <button type="button" class="shape-btn active" data-shape="rect" title="Standard Rectangular / Quad Plot">🔲 Standard Quad</button>
+                    <button type="button" class="shape-btn" data-shape="trapezoid" title="Trapezoid / Tapered Boundary">⏢ Trapezoid</button>
+                    <button type="button" class="shape-btn" data-shape="triangle" title="Triangular Splay / Corner Cut">📐 Triangular Splay</button>
+                    <button type="button" class="shape-btn" data-shape="lshape" title="L-Shaped Subdivided Compound">🔷 L-Shape</button>
+                    <button type="button" class="shape-btn" data-shape="pentagon" title="5-Sided Field Boundary">⬟ 5-Sided Polygon</button>
+                    <button type="button" class="shape-btn" data-shape="parallelogram" title="Skewed Cadastral Parallelogram">🔶 Parallelogram</button>
+                    <button type="button" class="shape-btn" data-shape="custom" title="Interactive Click-to-Add &amp; Remove Vertex Points">✏️ Custom Vertex</button>
+                  </div>
+                </div>
+
+                <!-- Custom Drawing Controls (Active in Custom Mode) -->
+                <div class="custom-toolbar" id="custom-toolbar" style="display:none;">
+                  <div class="custom-status">
+                    <span class="custom-badge">✏️ Custom Drawing Active</span>
+                    <small>Click map to add vertex points · Click a cyan handle to remove it · Drag handles to reposition</small>
+                  </div>
+                  <div class="custom-actions">
+                    <span class="vertex-counter" id="vertex-count-badge">4 Vertices</span>
+                    <button type="button" class="button button-secondary custom-btn" id="custom-undo-btn" title="Undo last point">↩️ Undo Point</button>
+                    <button type="button" class="button button-secondary custom-btn" id="custom-reset-btn" title="Reset to official record">🔄 Reset to Record</button>
+                    <button type="button" class="button button-danger custom-btn" id="custom-clear-btn" title="Clear all points and start fresh">🗑️ Clear &amp; Start Fresh</button>
+                  </div>
+                </div>
+
+                <!-- Map Legend -->
+                <div class="map-legend-bar">
+                  <div class="legend-item"><span class="legend-box legend-official"></span><span>Official Record (Amber Dashed)</span></div>
+                  <div class="legend-item"><span class="legend-box legend-survey"></span><span>Officer Survey (Cyan Solid)</span></div>
+                  <div class="legend-item"><span class="legend-box legend-overlap"></span><span>Overlap / Intersect</span></div>
+                </div>
+              </div>
+
+              <!-- Interactive Leaflet Map -->
+              <div class="parcel-map field-map-container">
+                <div id="field-map" class="interactive-map"></div>
+                <!-- Floating Live HUD on Map -->
+                <div class="map-live-hud" id="map-live-hud">
+                  <div class="hud-item"><span>Live IoU</span><strong id="hud-iou">1.0000</strong></div>
+                  <div class="hud-item"><span>Centroid Shift</span><strong id="hud-shift">0.0 m</strong></div>
+                  <div class="hud-item"><span>Area Extent</span><strong id="hud-area">—</strong></div>
+                  <div class="hud-item"><span>Live Risk</span><strong id="hud-risk" class="hud-clear">0.0% (CLEAR)</strong></div>
+                </div>
+              </div>
+
+              <!-- Interaction Hint and Scale control -->
+              <div class="map-helper-bar">
+                <div class="drag-hint">
+                  <span class="hint-dot"></span>
+                  <span><strong>Drag center 🎯</strong> to move anywhere in 2D. <strong>Drag cyan corner circles ⚪</strong> to stretch &amp; reshape field lines.</span>
+                </div>
+                <div class="fine-tune-controls">
+                  <label for="fine-scale">Scale Extent: <span id="scale-val">100%</span></label>
+                  <input type="range" id="fine-scale" min="50" max="160" value="100" step="2">
+                </div>
+              </div>
             </article>
+
             <aside class="field-controls">
-              <article class="panel field-step-card"><span class="step-chip">1</span><h2>Authenticate surveyor</h2><p>Bind the observation to the field officer’s device key.</p><div style="margin-bottom:10px;"><label for="gnss-equipment" style="font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase;">GNSS Equipment</label><select id="gnss-equipment" style="margin-top:4px;"><option value="rtk">RTK Rover (±2cm)</option><option value="dgps">DGPS (±50cm)</option><option value="handheld">Handheld GNSS (±3m)</option></select></div><button class="button button-secondary wide" id="authenticate-button" type="button">Authenticate device key</button><small id="authentication-state">No device signature attached</small></article>
-              <article class="panel field-step-card"><span class="step-chip">2</span><h2>Capture observation</h2><p>Freeze the selected field boundary and its measurement metadata.</p><button class="button button-secondary wide" id="capture-button" type="button">Capture field boundary</button><small id="capture-detail">Adjust the boundary control, then capture.</small></article>
-              <article class="panel submit-card"><span class="step-chip">3</span><h2>Submit to Spatial SDI</h2><p>The signed payload is evaluated by the spatial verification engine.</p><button class="button button-primary wide" id="submit-evidence-button" type="button" disabled>Submit signed evidence <span aria-hidden="true">→</span></button></article>
+              <article class="panel field-step-card">
+                <span class="step-chip">1</span>
+                <h2>Authenticate surveyor</h2>
+                <p>Bind the observation to the field officer’s device key.</p>
+                <div style="margin-bottom:10px;">
+                  <label for="gnss-equipment" style="font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase;">GNSS Equipment</label>
+                  <select id="gnss-equipment" style="margin-top:4px;">
+                    <option value="rtk">RTK Rover (±2cm)</option>
+                    <option value="dgps">DGPS (±50cm)</option>
+                    <option value="handheld">Handheld GNSS (±3m)</option>
+                  </select>
+                </div>
+                <button class="button button-secondary wide" id="authenticate-button" type="button">Authenticate device key</button>
+                <small id="authentication-state">No device signature attached</small>
+              </article>
+              <article class="panel field-step-card">
+                <span class="step-chip">2</span>
+                <h2>Capture observation</h2>
+                <p>Freeze the selected field boundary and its measurement metadata.</p>
+                <button class="button button-secondary wide" id="capture-button" type="button">Capture field boundary</button>
+                <small id="capture-detail">Adjust or drag field lines, then capture.</small>
+              </article>
+              <article class="panel submit-card">
+                <span class="step-chip">3</span>
+                <h2>Submit to Spatial SDI</h2>
+                <p>The signed payload is evaluated by the spatial verification engine.</p>
+                <button class="button button-primary wide" id="submit-evidence-button" type="button" disabled>Submit signed evidence <span aria-hidden="true">→</span></button>
+              </article>
             </aside>
           </div>
           <section class="panel field-result" aria-live="polite"><div class="panel-heading"><div><p class="eyebrow">Verification output</p><h2>Spatial consistency vector</h2></div><span id="spatial-result-badge" class="state-badge neutral">Awaiting submission</span></div><div class="spatial-metrics"><div><span>Intersection over Union</span><strong id="metric-iou">—</strong></div><div><span>Centroid displacement</span><strong id="metric-centroid">—</strong></div><div><span>Area ratio</span><strong id="metric-area-ratio">—</strong></div><div><span>Risk score</span><strong id="metric-risk">—</strong></div></div><p id="spatial-summary" class="result-summary">A captured, signed observation is required before evaluation.</p></section>
         </section>
 
+        <!-- ==========================================
+             🛡️ VIEW 4: REVENUE DESK (OFFICER)
+             ========================================== -->
         <section class="view" id="view-revenue" aria-labelledby="revenue-title">
           <div class="view-heading"><div><p class="eyebrow">Phase 5–7 · Human in the loop</p><h1 id="revenue-title">Revenue adjudication desk</h1><p>Review material spatial discrepancies; certification and judicial escalation are explicit, traceable actions.</p></div><button class="button button-secondary" id="refresh-inbox-button" type="button">Refresh queue</button></div>
           <section class="panel inbox-panel"><div class="panel-heading" style="align-items:center;"><div><p class="eyebrow">Pending human review</p><h2>Spatial SDI queue</h2></div><div style="display:flex; gap:15px; align-items:center;"><input type="text" id="revenue-search" placeholder="Search ULPIN..." style="padding:6px 10px; border:1px solid #c4cdcf; border-radius:6px; font-size:11px;" aria-label="Search ULPIN"><span class="panel-meta" id="inbox-count">0 open cases</span></div></div><div class="table-wrap"><table><thead><tr><th>ULPIN</th><th>Jurisdiction</th><th>Classification</th><th>Spatial evidence</th><th>Decision</th></tr></thead><tbody id="revenue-inbox"><tr class="empty-row"><td colspan="5">Loading revenue queue…</td></tr></tbody></table></div></section>
           <section class="decision-layout"><article class="panel authority-note"><p class="eyebrow">Decision guardrail</p><h2>Certification is a human act.</h2><p>Only a Revenue Officer can certify a clear state. A certified case is then anchored with a compact cryptographic receipt; source documents and personal data remain off-ledger.</p></article><article class="panel ledger-receipt" aria-live="polite"><div class="panel-heading"><div><p class="eyebrow">Phase 7 receipt</p><h2>Consortium ledger</h2></div><span id="ledger-badge" class="state-badge neutral">No receipt</span></div><pre id="ledger-output">No state transition has been requested in this session.</pre></article></section>
         </section>
 
+        <!-- ==========================================
+             🛡️ VIEW 5: GRIEVANCES INBOX (OFFICER)
+             ========================================== -->
+        <section class="view" id="view-grievances" aria-labelledby="grievance-desk-title">
+          <div class="view-heading">
+            <div>
+              <p class="eyebrow">Citizen Public Grievances · Real-Time SDI</p>
+              <h1 id="grievance-desk-title">Grievance Adjudication Desk</h1>
+              <p>Live citizen dispute reports. Dispatch field surveys, inspect satellite geometries, and resolve claims with blockchain anchoring.</p>
+            </div>
+            <button class="button button-secondary" id="refresh-admin-grievances-btn" type="button">Refresh Grievances</button>
+          </div>
+
+          <section class="panel inbox-panel">
+            <div class="panel-heading" style="align-items:center;">
+              <div>
+                <p class="eyebrow">Live Redressal Stream</p>
+                <h2>Incoming Citizen Grievances</h2>
+              </div>
+              <span class="panel-meta" id="admin-grievance-count-meta">2 active complaints</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Grievance ID</th>
+                    <th>Citizen / Aadhaar</th>
+                    <th>ULPIN &amp; State</th>
+                    <th>Dispute Category</th>
+                    <th>Complaint Details</th>
+                    <th>Status</th>
+                    <th>Officer Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-grievances-tbody">
+                  <tr class="empty-row"><td colspan="7">Loading citizen grievances…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <!-- ==========================================
+             🛡️ VIEW 6: TRIBUNAL DOCKET (OFFICER)
+             ========================================== -->
         <section class="view" id="view-tribunal" aria-labelledby="tribunal-title">
           <div class="view-heading"><div><p class="eyebrow">Judicial escalation</p><h1 id="tribunal-title">Tribunal docket</h1><p>Escalated parcels are persisted as judicial holds and cannot be ledger-transitioned by the portal.</p></div><button class="button button-secondary" id="refresh-dockets-button" type="button">Refresh dockets</button></div>
           <section id="docket-list" class="docket-list" aria-live="polite"><div class="empty-docket"><span class="empty-icon">§</span><h2>No active judicial holds</h2><p>Escalate a case from the Revenue Desk to freeze its title workflow and create a docket.</p></div></section>
         </section>
+
       </main>
     </div>
   </div>

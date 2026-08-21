@@ -1,0 +1,49 @@
+Created At: 2026-08-21T06:38:03+05:30
+Completed At: 2026-08-21T06:38:03+05:30
+File Path: `file:///c:/DRIVE-LOCAL/HACKATHONS/INNOHACK/plot-armor/clients/unified-portal/index.html`
+Total Lines: 502
+Total Bytes: 35412
+Showing lines 20 to 60
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+20:         <span>
+21:           <strong>Plot-Armor</strong>
+22:           <small>Land intelligence &amp; trust</small>
+23:         </span>
+24:       </a>
+25:       
+26:       <!-- Dynamic Nav Links -->
+27:       <nav class="main-nav" id="main-nav" aria-label="Portal sections">
+28:         <!-- Officer Navigation (Default when Officer is logged in) -->
+29:         <div id="nav-officer-links" style="display:flex; gap:2px;">
+30:           <button class="nav-link" type="button" data-navigate="overview">Overview</button>
+31:           <button class="nav-link" type="button" data-navigate="registry">Record assessment</button>
+32:           <button class="nav-link" type="button" data-navigate="field">Field verification</button>
+33:           <button class="nav-link" type="button" data-navigate="revenue">Revenue desk</button>
+34:           <button class="nav-link" type="button" data-navigate="grievances">Grievances <span class="nav-count-badge" id="nav-grievance-count">2</span></button>
+35:           <button class="nav-link" type="button" data-navigate="tribunal">Tribunal</button>
+36:         </div>
+37: 
+38:         <!-- Citizen Navigation (Active when Citizen is logged in) -->
+39:         <div id="nav-citizen-links" style="display:none; gap:2px;">
+40:           <button class="nav-link active" type="button" data-navigate="citizen-holdings">🌾 My Land Holdings</button>
+41:           <button class="nav-link" type="button" data-navigate="citizen-file">🚨 File Grievance</button>
+42:           <button class="nav-link" type="button" data-navigate="citizen-tracker">📊 Live Grievance Tracker</button>
+43:         </div>
+44:       </nav>
+45: 
+46:       <!-- User Role Pill & Portal Switcher -->
+47:       <div class="user-pill" id="user-pill" style="display:none;">
+48:         <span class="user-avatar" id="user-avatar">👤</span>
+49:         <div class="user-meta">
+50:           <strong id="user-display-name">Citizen</strong>
+51:           <small id="user-display-sub">Aadhaar verified</small>
+52:         </div>
+53:         <button type="button" class="button button-ghost button-compact" id="switch-portal-btn" title="Switch Portal">🔁 Switch Portal</button>
+54:         <button type="button" class="button button-ghost button-compact" id="logout-btn" title="Logout">🚪</button>
+55:       </div>
+56: 
+57:       <div class="gateway-status" id="gateway-status" role="status" aria-live="polite"><span class="status-dot"></span><span>Connecting gateway</span></div>
+58:     </header>
+59: 
+60:     <div class="portal-layout" id="portal-layout">
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
