@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plot Armor - Enterprise Architecture</title>
+    
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>Plot Armor</h1>
+            <p class="subtitle">Architectural Dossier</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#first-principles" class="active"><i class="fas fa-cube"></i> First Principles</a></li>
+            <li><a href="#architecture"><i class="fas fa-network-wired"></i> Architecture</a></li>
+            <li><a href="#workflow"><i class="fas fa-tasks"></i> Procedural Workflow</a></li>
+            <li><a href="#tee"><i class="fas fa-shield-alt"></i> TEE Principles</a></li>
+            <li><a href="#webdev"><i class="fas fa-laptop-code"></i> Web Dev Principles</a></li>
+            <li><a href="#math"><i class="fas fa-subscript"></i> Math Engines</a></li>
+            <li><a href="#codebase"><i class="fas fa-folder-open"></i> Codebase Inventory</a></li>
+            <li><a href="#scalability"><i class="fas fa-rocket"></i> Scalability Roadmap</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="first-principles" class="fade-in">
+            <h2>1. First Principles</h2>
+            <div class="card-grid">
+                <div class="interactive-card">
+                    <h4>Decentralized Trust</h4>
+                    <p>Eliminating single points of failure in land registry through verifiable credentials and transparent logging.</p>
+                </div>
+                <div class="interactive-card">
+                    <h4>Spatial Integrity</h4>
+                    <p>Ensuring absolute geometric consensus. A plot cannot exist in two places, nor overlap without triggering the DERE matrix.</p>
+                </div>
+                <div class="interactive-card">
+                    <h4>Immutable Anchoring</h4>
+                    <p>Finalizing verified land boundaries using an append-only state, aligned with ISO 19152-1 LADM standards.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="fade-in">
+            <h2>2. System Architecture</h2>
+            <p>The system leverages a decoupled, stateless backend communicating with a highly responsive, zero-build frontend.</p>
+            <div class="mermaid">
+                graph TD
+                    A[Client: Vanilla JS / HTML] -->|REST API| B(Node.js Express Backend)
+                    B --> C{Engines}
+                    C -->|Turf.js| D[Spatial Engine]
+                    C --> E[DERE Engine]
+                    C --> F[Graph Engine]
+                    B --> G[(LADM SQLite Database)]
+                    style A fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#fff
+                    style B fill:#1e293b,stroke:#14b8a6,stroke-width:2px,color:#fff
+                    style G fill:#f59e0b,stroke:#fff,stroke-width:2px,color:#fff
+            </div>
+        </section>
+
+        <section id="workflow" class="fade-in">
+            <h2>3. Procedural Workflow</h2>
+            <p>The 7-Phase Trust Pipeline establishes a strict state machine for land verification:</p>
+            <div class="timeline">
+                <div class="timeline-item"><strong>1. Observe:</strong> Ingest cadastral and GNSS data boundaries.</div>
+                <div class="timeline-item"><strong>2. Validate:</strong> Check topological constraints and schema limits.</div>
+                <div class="timeline-item"><strong>3. Compare:</strong> Execute spatial diffing (IoU, Hausdorff).</div>
+                <div class="timeline-item"><strong>4. Classify:</strong> Assign DERE risk vectors based on threshold breaches.</div>
+                <div class="timeline-item"><strong>5. Review:</strong> Persona-based human-in-the-loop validation via UI.</div>
+                <div class="timeline-item"><strong>6. Decide:</strong> Tribunal/Revenue officer consensus application.</div>
+                <div class="timeline-item"><strong>7. Anchor:</strong> Commit to LADM compliant ledger.</div>
+            </div>
+        </section>
+
+        <section id="tee" class="fade-in">
+            <h2>4. TEE Principles Implemented</h2>
+            <p>Trusted Execution Environment (TEE) philosophies are applied at the software level to guarantee computational integrity:</p>
+            <ul>
+                <li><strong>Isolated Computation:</strong> Spatial engines run in sandboxed Node instances, ensuring boundary calculations cannot be tampered with by external intercepts.</li>
+                <li><strong>Deterministic Outcomes:</strong> Given the same GeoJSON inputs, the Spatial Engine will always produce the exact same IoU and Risk Score algorithms.</li>
+                <li><strong>Audit Trails:</strong> Every state transition in the 7-phase pipeline logs a cryptographic trace of the payload.</li>
+            </ul>
+        </section>
+
+        <section id="webdev" class="fade-in">
+            <h2>5. Web Development Principles</h2>
+            <div class="interactive-card">
+                <h4>Zero-Build Philosophy</h4>
+                <p>The frontend completely eschews complex bundlers (Webpack, Vite) in favor of native ES modules and vanilla DOM APIs. This guarantees maximum longevity, blistering fast load times, and zero dependency rot over the lifespan of municipal adoption.</p>
+            </div>
+            <div class="interactive-card">
+                <h4>Persona-Driven UI</h4>
+                <p>The UI dynamically morphs based on the active persona (Revenue Officer, Tribunal, Surveyor), enabling targeted features like Legal Summons Generation and GNSS selections without loading entirely separate dashboard applications.</p>
+            </div>
+        </section>
+
+        <section id="math" class="fade-in">
+            <h2>6. Mathematics Behind the Engines</h2>
+            <p>Plot Armor utilizes strict geometric mathematics to resolve boundary disputes dynamically.</p>
+            
+            <div class="math-card">
+                <h3>Intersection over Union (IoU)</h3>
+                <p>Calculates the exact overlap fraction between the claimed boundary and the anchored boundary.</p>
+                <div class="math-equation">
+                    $$ \text{IoU} = \frac{\text{Area}(A \cap B)}{\text{Area}(A \cup B)} $$
+                </div>
+            </div>
+
+            <div class="math-card">
+                <h3>Risk Score Calculation</h3>
+                <p>The risk of a dispute is inversely proportional to the IoU.</p>
+                <div class="math-equation">
+                    $$ \text{Risk Score} = (1 - \text{IoU}) \times 100 $$
+                </div>
+            </div>
+
+            <div class="math-card">
+                <h3>Centroid Shift Vector</h3>
+                <p>Measures the Euclidean distance between the geographic centers of two plots to detect boundary drifts.</p>
+                <div class="math-equation">
+                    $$ \Delta C = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} $$
+                </div>
+            </div>
+        </section>
+
+        <section id="codebase" class="fade-in">
+            <h2>7. Codebase Inventory</h2>
+            <table class="code-table">
+                <thead>
+                    <tr>
+                        <th>File / Directory</th>
+                        <th>Purpose & Phase Support</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>backend/src/engines/spatialEngine.js</code></td>
+                        <td>Calculates IoU, Hausdorff distance, and polygon intersections. (Phase 3: Compare)</td>
+                    </tr>
+                    <tr>
+                        <td><code>backend/src/engines/dereEngine.js</code></td>
+                        <td>Classifies disputes into the DERE matrix based on spatial outputs. (Phase 4: Classify)</td>
+                    </tr>
+                    <tr>
+                        <td><code>backend/src/db/database.js</code></td>
+                        <td>Maintains the ISO 19152-1 LADM SQLite schema and synthetic ULPINs. (Phase 7: Anchor)</td>
+                    </tr>
+                    <tr>
+                        <td><code>clients/unified-portal/app.js</code></td>
+                        <td>Handles SVG rendering, persona switching, and PDF generation. (Phase 5: Review)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="scalability" class="fade-in">
+            <h2>8. Scalability Roadmap</h2>
+            <p>To scale from regional pilot to a national infrastructure, the following architectural upgrades are mapped out:</p>
+            <div class="timeline">
+                <div class="timeline-item"><strong>Database Migration:</strong> Transition from SQLite to PostgreSQL with PostGIS extensions for native spatial indexing (R-Trees) and concurrent high-volume reads.</div>
+                <div class="timeline-item"><strong>Compute Offloading:</strong> Rewrite the Spatial Engine in Rust via WebAssembly (Wasm) to handle millions of overlapping polygons per second seamlessly.</div>
+                <div class="timeline-item"><strong>Distributed Consensus:</strong> Implement a Hyperledger Fabric layer for the "Anchor" phase to ensure state-level immutability across disparate municipal nodes.</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- External Script Loaders -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.4.0/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    
+    <!-- Custom Logic -->
+    <script src="js/main.js"></script>
+</body>
+</html>
